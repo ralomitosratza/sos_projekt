@@ -4,6 +4,11 @@ import torch.optim as optim
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
+import pynvml as nvsmi
+
+
+nvsmi.nvmlInit()
+handle = nvsmi.nvmlDeviceGetHandleByIndex(0)
 
 training_data = datasets.MNIST(
     root="data",
@@ -26,7 +31,11 @@ train_dataloader = DataLoader(training_data, batch_size=batch_size)
 test_dataloader = DataLoader(test_data, batch_size=batch_size)
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-print(f"Using {device} device")
+print(f"Using {device} device: {torch.cuda.get_device_name()}")
+# res = nvsmi.nvmlDeviceGetUtilizationRates(handle)
+# print(nvsmi.nvmlDeviceGetMemoryInfo(handle))
+# print(nvsmi.nvmlDeviceGetName(handle))
+# print(f'gpu: {res.gpu}%, gpu-mem: {res.memory}%')
 
 
 # Define model
