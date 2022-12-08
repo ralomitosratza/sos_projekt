@@ -1,7 +1,7 @@
 import os
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
+import torch.nn.functional as f
 import torch.optim as optim
 from torchvision import datasets
 from torchvision.transforms import ToTensor
@@ -13,8 +13,8 @@ class DigitIdentifier:
                  optimizer=None, lr=0.1, momentum=0.8):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         print(f"Using {self.device} device")
-        self.train_data = self.get_data(train_data, Train=True)
-        self.test_data = self.get_data(test_data, Train=False)
+        self.train_data = self.get_data(train_data, train=True)
+        self.test_data = self.get_data(test_data, train=False)
         self.batch_size = batch_size
 
         self.train_dataloader = DataLoader(self.train_data, batch_size=self.batch_size)
@@ -29,7 +29,7 @@ class DigitIdentifier:
         if self.model_path is not None and os.path.isfile(self.model_path) and load is True:
             model = torch.load(self.model_path).to(self.device)
         else:
-            model = neuralNet().to(self.device)
+            model = NeuralNet().to(self.device)
         return model
 
     def get_optimizer(self, optimizer, lr, momentum):
@@ -56,6 +56,7 @@ class DigitIdentifier:
 
         train_loss /= len(self.train_data)
         correct /= len(self.train_dataloader.dataset)
+        print(correct)
         print(f"Train Error (epoch: {epoch + 1}): Average accuracy: {(100 * correct)}%, Average loss: {train_loss} \n")
 
     def save_model(self):
@@ -63,11 +64,11 @@ class DigitIdentifier:
             torch.save(self.model, self.model_path)
 
     @staticmethod
-    def get_data(data, Train=True):
+    def get_data(data, train=True):
         if data is None:
             data = datasets.MNIST(
                 root="data",
-                train=Train,
+                train=train,
                 download=True,
                 transform=ToTensor(),
             )
@@ -76,13 +77,13 @@ class DigitIdentifier:
     @staticmethod
     def get_loss_fn(loss_fn):
         if loss_fn is None:
-            loss_fn = F.nll_loss
+            loss_fn = f.nll_loss
         return loss_fn
 
 
-class neuralNet(nn.Module):
+class NeuralNet(nn.Module):
     def __init__(self):
-        super(neuralNet, self).__init__()
+        super(NeuralNet, self).__init__()
         self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
         self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
         self.conv_dropout = nn.Dropout2d()
@@ -91,17 +92,14 @@ class neuralNet(nn.Module):
 
     def forward(self, x):
         x = self.conv1(x)
-        x = F.max_pool2d(x, 2)
-        x = F.relu(x)
+        x = f.max_pool2d(x, 2)
+        x = f.relu(x)
         x = self.conv2(x)
         x = self.conv_dropout(x)
-        x = F.max_pool2d(x, 2)
-        x = F.relu(x)
+        x = f.max_pool2d(x, 2)
+        x = f.relu(x)
         x = x.view(-1, 320)
-        x = F.relu(self.fc1(x))
+        x = f.relu(self.fc1(x))
         x = self.fc2(x)
-        x = F.log_softmax(x, dim=1)  # softmax setzt die höchste Wahrscheinlichkeit auf 1, Rest auf 0
+        x = f.log_softmax(x, dim=1)  # softmax setzt die höchste Wahrscheinlichkeit auf 1, Rest auf 0
         return x
-
-
-
