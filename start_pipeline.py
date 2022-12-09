@@ -1,10 +1,15 @@
 from digit_identifier import DigitIdentifier
 
-# TODO: define hyperparameters and stuff
+# TODO: define hyper parameters and stuff
+epochs = 10
 # TODO: digit_identifier loop
-DI = DigitIdentifier()
-for epoch in range(10):
-    DI.train_model(epoch)
-    DI.save_model()
+DI = DigitIdentifier(load=True)
+DI.train_model(epochs)
+# print(DI.needed_time)
+# print(DI.memory_total)
+# print(DI.memory_used)
+# print(DI.memory_free)
+DI.test_model()
+DI.show_results(show=5)
 # TODO: handle return values
 

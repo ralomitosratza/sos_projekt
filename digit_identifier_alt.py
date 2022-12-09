@@ -4,7 +4,7 @@ import torch.optim as optim
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
-import pynvml as nvsmi
+import pynvml.smi as nvsmi
 
 
 nvsmi.nvmlInit()
@@ -36,7 +36,8 @@ print(f"Using {device} device: {torch.cuda.get_device_name()}")
 # print(nvsmi.nvmlDeviceGetMemoryInfo(handle))
 # print(nvsmi.nvmlDeviceGetName(handle))
 # print(f'gpu: {res.gpu}%, gpu-mem: {res.memory}%')
-
+nvsmiss = nvsmi.nvidia_smi.getInstance()
+print(nvsmiss.DeviceQuery('memory.free, memory.total'))
 
 # Define model
 class NeuralNetwork(nn.Module):
