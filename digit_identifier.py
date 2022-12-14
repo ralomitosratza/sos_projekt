@@ -1,4 +1,6 @@
+import pandas as pd
 import os
+import time
 import torch
 import torch.nn as nn
 import torch.nn.functional as f
@@ -8,14 +10,14 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
 from pynvml.smi import nvidia_smi
-import time
 
 
 class DigitIdentifier:
-    def __init__(self, train_data=None, test_data=None, batch_size=64, model_path=None, load=False, loss_fn=None,
+    def __init__(self, train_data=None, test_data=None, epochs=1, batch_size=64, load=False, csv_index=0, loss_fn=None,
                  optimizer=None, lr=0.1, momentum=0.8):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         print(f"Using {self.device} device")
+        self.epochs = epochs
         self.train_data = self.get_data(train_data, train=True)
         self.test_data = self.get_data(test_data, train=False)
         self.batch_size = batch_size
@@ -23,29 +25,37 @@ class DigitIdentifier:
         self.train_dataloader = DataLoader(self.train_data, batch_size=self.batch_size)
         self.test_dataloader = DataLoader(self.test_data, batch_size=self.batch_size)
 
-        self.model_path = model_path
-        self.model = self.get_model(load=load)
+        self.model = self.get_model(load=load, csv_index=0)
         self.loss_fn = self.get_loss_fn(loss_fn)
-        self.optimizer = self.get_optimizer(optimizer, lr=lr, momentum=momentum)
+        self.lr = lr
+        self.momentum = momentum
+        self.optimizer = self.get_optimizer(optimizer)
         self.needed_time = None
         self.memory_total = None
         self.memory_used = None
         self.memory_free = None
+        self.average_accuracy_train = None
+        self.average_accuracy_test = None
+        self.average_loss_train = None
+        self.average_loss_test = None
 
-    def get_model(self, load=False):
-        if self.model_path is not None and os.path.isfile(self.model_path) and load is True:
-            model = torch.load(self.model_path).to(self.device)
+    def get_model(self, load=False, csv_index=0):
+        path = f"/models/digit_identifier{csv_index}.pt"
+        if load is True and os.path.isfile(path) is True:
+            model = torch.load(path).to(self.device)
         else:
             model = NeuralNet().to(self.device)
         return model
 
-    def get_optimizer(self, optimizer, lr, momentum):
+    def get_optimizer(self, optimizer):
         if optimizer is None:
-            optimizer = optim.SGD(self.model.parameters(), lr=lr, momentum=momentum)
+            optimizer = optim.SGD(self.model.parameters(), lr=self.lr, momentum=self.momentum)
         return optimizer
 
     def train_model(self, epochs):
         start_time = time.time()
+        correct = None
+        train_loss = None
         for epoch in range(epochs):
             self.model.train()
             train_loss, correct = 0, 0
@@ -64,13 +74,15 @@ class DigitIdentifier:
                     print(f"current loss: {loss.item()} ")
             train_loss /= len(self.train_data)
             correct /= len(self.train_dataloader.dataset)
-            print(correct)
             print(f"Train Error (epoch: {epoch + 1}): Average accuracy: {(100 * correct)}%, Average loss: {train_loss}\n")
 
         self.memory_total = self.get_memory_usage('total')
         self.memory_used = self.get_memory_usage('used')
         self.memory_free = self.memory_total - self.memory_used
         self.needed_time = time.time() - start_time
+        self.average_accuracy_train = 100 * correct
+        self.average_loss_train = train_loss
+        self.test_model()
         self.save_model()
 
     def test_model(self):
@@ -85,10 +97,28 @@ class DigitIdentifier:
         test_loss /= len(self.test_dataloader)
         correct /= len(self.test_dataloader.dataset)
         print(f"Test Error: Accuracy: {(100 * correct)}%, Average loss: {test_loss} \n")
+        self.average_accuracy_test = 100 * correct
+        self.average_loss_test = test_loss
 
     def save_model(self):
-        if self.model_path is not None:
-            torch.save(self.model, self.model_path)
+        # TODO: suche Einträge in Tabelle und erhöhe indize
+        df = pd.DataFrame({'average_accuracy_train': self.average_accuracy_train,
+                           'average_loss_train': self.average_loss_train,
+                           'average_accuracy_test': self.average_accuracy_test,
+                           'average_loss_test': self.average_loss_test,
+                           'needed_time': self.needed_time, 'memory_used': self.memory_used/self.memory_total,
+                           'memory_total': self.memory_total, 'epochs': self.epochs, 'batch_size': self.batch_size,
+                           'loss_function': self.loss_fn, 'optimizer': self.optimizer, 'learning_rate': self.lr,
+                           'momentum': self.momentum}, index=[1])
+
+        path = 'panda_tables/runs.csv'
+        df.to_csv(path, mode='a', header=not os.path.exists(path), index=False)
+        csv_index = df.shape[0] - 1
+        torch.save(self.model, f"models/digit_identifier{csv_index}.pt")
+        #print(df)
+        # path = 'panda_tables/runs.xlsx'
+        # with pd.ExcelWriter(path=path, if_sheet_exists='overlay', mode='a', engine='openpyxl') as writer:
+        #     df.to_excel(excel_writer=writer, startrow=writer.sheets['Sheet1'].max_row, header=False, index=False)
 
     def show_results(self, show=5):
         shown = 0

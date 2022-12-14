@@ -1,0 +1,12 @@
+average_accuracy_train,average_loss_train,average_accuracy_test,average_loss_test,needed_time,memory_used,memory_total,epochs,batch_size,loss_function,optimizer,learning_rate,momentum
+90.385,0.004858699929461969,97.44,0.07863573037543198,17.070740938186646,0.1662273406982422,4096.0,1,64,<function nll_loss at 0x000001C32EB5C4C0>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.8
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.8

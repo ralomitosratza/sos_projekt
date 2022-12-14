@@ -1,3 +1,5 @@
+import datetime
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -5,8 +7,12 @@ from torchvision import datasets
 from torchvision.transforms import ToTensor
 from torch.utils.data import DataLoader
 import pynvml.smi as nvsmi
+import logging
+from datetime import datetime
 
 
+logging.basicConfig(filename="mircos_log.log", level=logging.INFO)
+logging.warning(f"{datetime.now().isoformat()}: Error on url:")
 nvsmi.nvmlInit()
 handle = nvsmi.nvmlDeviceGetHandleByIndex(0)
 
