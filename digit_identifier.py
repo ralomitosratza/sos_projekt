@@ -13,8 +13,8 @@ from pynvml.smi import nvidia_smi
 
 
 class DigitIdentifier:
-    def __init__(self, train_data=None, test_data=None, epochs=1, batch_size=64, load=False, csv_index=0, loss_fn=None,
-                 optimizer=None, lr=0.1, momentum=0.8):
+    def __init__(self, train_data=None, test_data=None, epochs=1, batch_size=64, load=False, csv_index=0,
+                 forward_dic=None, loss_fn=None, optimizer=None, lr=0.1, momentum=0.8):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         print(f"Using {self.device} device")
         self.epochs = epochs
@@ -25,7 +25,7 @@ class DigitIdentifier:
         self.train_dataloader = DataLoader(self.train_data, batch_size=self.batch_size)
         self.test_dataloader = DataLoader(self.test_data, batch_size=self.batch_size)
 
-        self.model = self.get_model(load=load, csv_index=csv_index)
+        self.model = self.get_model(forward_dic=forward_dic, load=load, csv_index=csv_index)
         self.loss_fn = self.get_loss_fn(loss_fn)
         self.lr = lr
         self.momentum = momentum
@@ -39,12 +39,12 @@ class DigitIdentifier:
         self.average_loss_train = None
         self.average_loss_test = None
 
-    def get_model(self, load=False, csv_index=0):
+    def get_model(self, forward_dic=None, load=False, csv_index=0):
         path = f"/models/digit_identifier{csv_index}.pt"
         if load is True and os.path.isfile(path) is True:
             model = torch.load(path).to(self.device)
         else:
-            model = NeuralNet().to(self.device)
+            model = NeuralNet(forward_dic=forward_dic).to(self.device)
         return model
 
     def get_optimizer(self, optimizer):
@@ -111,9 +111,8 @@ class DigitIdentifier:
                            'loss_function': self.loss_fn, 'optimizer': self.optimizer, 'learning_rate': self.lr,
                            'momentum': self.momentum}, index=[1])
 
-        csv_index = df.shape[0] - 1
-        torch.save(self.model, f"models/digit_identifier{csv_index}.pt")
         df.to_csv('panda_tables/runs.csv', mode='a', header=not os.path.exists('panda_tables/runs.csv'), index=False)
+        torch.save(self.model, f"models/digit_identifier{len(pd.read_csv('panda_tables/runs.csv')) - 1}.pt")
 
     def show_results(self, show=5):
         shown = 0
@@ -161,24 +160,42 @@ class DigitIdentifier:
 
 
 class NeuralNet(nn.Module):
-    def __init__(self):
+    def __init__(self, forward_dic=None):
         super(NeuralNet, self).__init__()
-        self.conv1 = nn.Conv2d(1, 10, kernel_size=5)
-        self.conv2 = nn.Conv2d(10, 20, kernel_size=5)
-        self.conv_dropout = nn.Dropout2d()
-        self.fc1 = nn.Linear(320, 60)
-        self.fc2 = nn.Linear(60, 10)
+        self.forward_dic = forward_dic
+        self.layer_dic = nn.ModuleDict()
+        i = 0
+        for step in forward_dic:
+            if forward_dic[step]['action'] == 'layer':
+                i += 1
+                self.layer_dic[f'layer{i}'] = self.get_layer(forward_dic[step])
 
     def forward(self, x):
-        x = self.conv1(x)
-        x = f.max_pool2d(x, 2)
-        x = f.relu(x)
-        x = self.conv2(x)
-        x = self.conv_dropout(x)
-        x = f.max_pool2d(x, 2)
-        x = f.relu(x)
-        x = x.view(-1, 320)
-        x = f.relu(self.fc1(x))
-        x = self.fc2(x)
-        x = f.log_softmax(x, dim=1)  # softmax setzt die höchste Wahrscheinlichkeit auf 1, Rest auf 0
+        i = 0
+        for step in self.forward_dic:
+            if self.forward_dic[step]['action'] == 'layer':
+                i += 1
+                x = self.layer_dic[f'layer{i}'](x)
+
+            elif self.forward_dic[step]['action'] == 'f.max_pool2d':
+                x = f.max_pool2d(x, kernel_size=self.forward_dic[step]['kernel_size'])
+            elif self.forward_dic[step]['action'] == 'f.relu':
+                x = f.relu(x)
+            elif self.forward_dic[step]['action'] == 'view':
+                x = x.view(self.forward_dic[step]['dim1'], self.forward_dic[step]['dim2'])
+            elif self.forward_dic[step]['action'] == 'f.log_softmax':
+                x = f.log_softmax(x, dim=self.forward_dic[step]['dim'])
+            else:
+                print('Failure while forward.')
         return x
+
+    @staticmethod
+    def get_layer(layer):
+        if layer['layer'] == 'conv2d':
+            return nn.Conv2d(layer['in'], layer['out'], kernel_size=layer['kernel_size'])
+        elif layer['layer'] == 'conv_dropout2d':
+            return nn.Dropout2d()
+        elif layer['layer'] == 'linear':
+            return nn.Linear(layer['in'], layer['out'])
+        else:
+            return None
