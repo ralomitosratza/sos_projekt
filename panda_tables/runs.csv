@@ -1,27 +1,5 @@
 average_accuracy_train,average_loss_train,average_accuracy_test,average_loss_test,needed_time,memory_used,memory_total,epochs,batch_size,loss_function,optimizer,learning_rate,momentum
-89.53,0.005173341643546397,97.57000000000001,0.08173269853006068,16.258801221847534,0.1662273406982422,4096.0,1,64,<function nll_loss at 0x000002041D1D3F70>,"SGD (
-Parameter Group 0
-    dampening: 0
-    differentiable: False
-    foreach: None
-    lr: 0.1
-    maximize: False
-    momentum: 0.8
-    nesterov: False
-    weight_decay: 0
-)",0.1,0.8
-89.55333333333333,0.00531374117139106,96.69,0.11186332966476845,16.450539588928223,0.1662273406982422,4096.0,1,64,<function nll_loss at 0x00000185902829D0>,"SGD (
-Parameter Group 0
-    dampening: 0
-    differentiable: False
-    foreach: None
-    lr: 0.1
-    maximize: False
-    momentum: 0.8
-    nesterov: False
-    weight_decay: 0
-)",0.1,0.8
-90.12666666666667,0.004947163836145773,97.05,0.09109640957182477,15.824355602264404,0.1662273406982422,4096.0,1,64,<function nll_loss at 0x000002895C30EE50>,"SGD (
+89.56333333333333,0.005181091458676383,96.85000000000001,0.10384964358111974,15.307731628417969,0.1662273406982422,4096.0,1,64,<function nll_loss at 0x00000225691FCA60>,"SGD (
 Parameter Group 0
     dampening: 0
     differentiable: False
