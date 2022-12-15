@@ -25,7 +25,7 @@ class DigitIdentifier:
         self.train_dataloader = DataLoader(self.train_data, batch_size=self.batch_size)
         self.test_dataloader = DataLoader(self.test_data, batch_size=self.batch_size)
 
-        self.model = self.get_model(load=load, csv_index=0)
+        self.model = self.get_model(load=load, csv_index=csv_index)
         self.loss_fn = self.get_loss_fn(loss_fn)
         self.lr = lr
         self.momentum = momentum
@@ -74,7 +74,8 @@ class DigitIdentifier:
                     print(f"current loss: {loss.item()} ")
             train_loss /= len(self.train_data)
             correct /= len(self.train_dataloader.dataset)
-            print(f"Train Error (epoch: {epoch + 1}): Average accuracy: {(100 * correct)}%, Average loss: {train_loss}\n")
+            print(f"Train Error (epoch: {epoch + 1}): Average accuracy: {(100 * correct)}%, "
+                  f"Average loss: {train_loss}\n")
 
         self.memory_total = self.get_memory_usage('total')
         self.memory_used = self.get_memory_usage('used')
@@ -101,7 +102,6 @@ class DigitIdentifier:
         self.average_loss_test = test_loss
 
     def save_model(self):
-        # TODO: suche Einträge in Tabelle und erhöhe indize
         df = pd.DataFrame({'average_accuracy_train': self.average_accuracy_train,
                            'average_loss_train': self.average_loss_train,
                            'average_accuracy_test': self.average_accuracy_test,
@@ -111,14 +111,9 @@ class DigitIdentifier:
                            'loss_function': self.loss_fn, 'optimizer': self.optimizer, 'learning_rate': self.lr,
                            'momentum': self.momentum}, index=[1])
 
-        path = 'panda_tables/runs.csv'
-        df.to_csv(path, mode='a', header=not os.path.exists(path), index=False)
         csv_index = df.shape[0] - 1
         torch.save(self.model, f"models/digit_identifier{csv_index}.pt")
-        #print(df)
-        # path = 'panda_tables/runs.xlsx'
-        # with pd.ExcelWriter(path=path, if_sheet_exists='overlay', mode='a', engine='openpyxl') as writer:
-        #     df.to_excel(excel_writer=writer, startrow=writer.sheets['Sheet1'].max_row, header=False, index=False)
+        df.to_csv('panda_tables/runs.csv', mode='a', header=not os.path.exists('panda_tables/runs.csv'), index=False)
 
     def show_results(self, show=5):
         shown = 0
