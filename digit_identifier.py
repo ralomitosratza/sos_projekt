@@ -15,9 +15,11 @@ from pynvml.smi import nvidia_smi
 
 class DigitIdentifier:
     def __init__(self, train_data=None, test_data=None, epochs=1, batch_size=64, load=False, csv_index=0,
-                 forward_dict=None, loss_fn=None, optimizer=None, lr=0.1, momentum=0.8):
+                 forward_dict=None, loss_fn=None, optimizer=None, lr=0.1, momentum=0.8, info=False):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        print(f"Using {self.device} device")
+        self.info = info
+        if self.info:
+            print(f"Using {self.device} device")
         self.epochs = epochs
         self.train_data = self.get_data(train_data, train=True)
         self.test_data = self.get_data(test_data, train=False)
@@ -70,12 +72,13 @@ class DigitIdentifier:
 
                 train_loss += loss.item()
                 correct += (prediction.argmax(1) == target).type(torch.float).sum().item()
-                if batch_id % 200 == 0:
+                if batch_id % 200 == 0 and self.info:
                     print(f"current loss: {loss.item()} ")
             train_loss /= len(self.train_data)
             correct /= len(self.train_dataloader.dataset)
-            print(f"Train Error (epoch: {epoch + 1}): Average accuracy: {(100 * correct)}%, "
-                  f"Average loss: {train_loss}\n")
+            if self.info:
+                print(f"Train Error (epoch: {epoch + 1}): Average accuracy: {(100 * correct)}%, "
+                      f"Average loss: {train_loss}\n")
 
         self.memory_total = self.get_memory_usage('total')
         self.memory_used = self.get_memory_usage('used')
@@ -97,14 +100,13 @@ class DigitIdentifier:
                 correct += (prediction.argmax(1) == target).type(torch.float).sum().item()
         test_loss /= len(self.test_dataloader)
         correct /= len(self.test_dataloader.dataset)
-        print(f"Test Error: Accuracy: {(100 * correct)}%, Average loss: {test_loss} \n")
+        if self.info:
+            print(f"Test Error: Accuracy: {(100 * correct)}%, Average loss: {test_loss} \n")
         self.average_accuracy_test = 100 * correct
         self.average_loss_test = test_loss
 
     def save_model(self):
-        df = pd.DataFrame({'average_accuracy_train': self.average_accuracy_train,
-                           'average_loss_train': self.average_loss_train,
-                           'average_accuracy_test': self.average_accuracy_test,
+        df = pd.DataFrame({'average_accuracy_test': self.average_accuracy_test,
                            'average_loss_test': self.average_loss_test,
                            'needed_time': self.needed_time, 'memory_used': self.memory_used/self.memory_total,
                            'memory_total': self.memory_total, 'epochs': self.epochs, 'batch_size': self.batch_size,
@@ -166,11 +168,17 @@ class DigitIdentifier:
 class NeuralNet(nn.Module):
     def __init__(self, forward_dict=None):
         super(NeuralNet, self).__init__()
+        picture_size = 28
+        last_output = 0
         self.forward_dict = forward_dict
         self.layer_list = nn.ModuleList()
         for step in forward_dict:
             if forward_dict[step]['action'] == 'layer':
-                self.layer_list.append(self.get_layer(forward_dict[step]))
+                layer, picture_size, last_output = self.get_layer(forward_dict[step], picture_size, last_output)
+                self.layer_list.append(layer)
+            elif forward_dict[step]['action'] == 'f.max_pool2d':
+                picture_size = int(picture_size/forward_dict[step]['kernel_size'])
+        self.view_dim2 = picture_size*picture_size*last_output
 
     def forward(self, x):
         i = 0
@@ -184,7 +192,7 @@ class NeuralNet(nn.Module):
             elif self.forward_dict[step]['action'] == 'f.relu':
                 x = f.relu(x)
             elif self.forward_dict[step]['action'] == 'view':
-                x = x.view(self.forward_dict[step]['dim1'], self.forward_dict[step]['dim2'])
+                x = x.view(self.forward_dict[step]['dim1'], self.view_dim2)
             elif self.forward_dict[step]['action'] == 'f.log_softmax':
                 x = f.log_softmax(x, dim=self.forward_dict[step]['dim'])
             else:
@@ -192,12 +200,17 @@ class NeuralNet(nn.Module):
         return x
 
     @staticmethod
-    def get_layer(layer):
+    def get_layer(layer, size, out):
         if layer['layer'] == 'conv2d':
-            return nn.Conv2d(layer['in'], layer['out'], kernel_size=layer['kernel_size'])
+            size = size - (layer['kernel_size'] - 1)
+            out = layer['out']
+            return nn.Conv2d(layer['in'], layer['out'], kernel_size=layer['kernel_size']), size, out
         elif layer['layer'] == 'conv_dropout2d':
-            return nn.Dropout2d()
+            return nn.Dropout2d(), size, out
         elif layer['layer'] == 'linear':
-            return nn.Linear(layer['in'], layer['out'])
+            if layer['in'] == 0:
+                return nn.Linear(size*size*out, layer['out']), size, out
+            else:
+                return nn.Linear(layer['in'], layer['out']), size, out
         else:
             return None
