@@ -1,3 +1,7 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
 def get_forward_set():
     step1_out = range(20, 50, 10)
     step1_kernel_size = range(2, 6, 2)
@@ -31,3 +35,20 @@ def get_forward_set():
                                        'step12': {'action': 'f.log_softmax', 'dim': 1}}
                                 parameter_sets.append(dic)
     return parameter_sets
+
+
+def plot_pandas(start_index=0, end_index=None):
+    path = 'panda_tables/runs.csv'
+    df = pd.read_csv(path)
+    if end_index is None:
+        end_index = len(pd.read_csv(path))
+    list_of_indices = list(range(start_index, end_index, 1))
+    df = df.iloc[list_of_indices, :]
+    fig, ax = plt.subplots(figsize=(15, 7))
+    ax.plot(df['average_accuracy_test'], color='steelblue')
+    ax.set_xlabel('Run')
+    ax.set_ylabel('average accuracy test', color='steelblue')
+    ax2 = ax.twinx()
+    ax2.plot(df['memory_used'], color='red')
+    ax2.set_ylabel('memory used', color='red')
+    plt.show()

@@ -28,10 +28,11 @@ class DigitIdentifier:
         self.train_dataloader = DataLoader(self.train_data, batch_size=self.batch_size)
         self.test_dataloader = DataLoader(self.test_data, batch_size=self.batch_size)
         self.model = self.get_model(forward_dict=forward_dict, load=load, csv_index=csv_index)
-        self.loss_fn = self.get_loss_fn(loss_fn)
-        self.lr = lr
-        self.momentum = momentum
-        self.optimizer = self.get_optimizer(optimizer)
+        if load is False:
+            self.loss_fn = self.get_loss_fn(loss_fn)
+            self.lr = lr
+            self.momentum = momentum
+            self.optimizer = self.get_optimizer(optimizer)
         self.needed_time = None
         self.memory_total = None
         self.memory_used = None
@@ -42,7 +43,7 @@ class DigitIdentifier:
         self.average_loss_test = None
 
     def get_model(self, forward_dict=None, load=False, csv_index=0):
-        path = f"/models/digit_identifier{csv_index}.pt"
+        path = f"models/digit_identifier{csv_index}.pt"
         if load is True and os.path.isfile(path) is True:
             model = torch.load(path).to(self.device)
         else:
@@ -120,7 +121,7 @@ class DigitIdentifier:
         pickle.dump(self.forward_dict, forward_dict)
         torch.save(self.model, f"models/digit_identifier{num}.pt")
 
-    def show_results(self, show=5):
+    def try_model(self, show=5):
         shown = 0
         self.model.eval()
         images, labels = next(iter(self.test_dataloader))
