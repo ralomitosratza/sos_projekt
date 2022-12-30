@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def get_forward_set():
+def get_forward_sets():
     step1_out = range(20, 50, 10)
     step1_kernel_size = range(2, 6, 2)
     step2_kernel_size = range(2, 3, 1)
@@ -45,10 +45,15 @@ def plot_pandas(start_index=0, end_index=None):
     list_of_indices = list(range(start_index, end_index, 1))
     df = df.iloc[list_of_indices, :]
     fig, ax = plt.subplots(figsize=(15, 7))
+    fig.subplots_adjust(right=0.75)
     ax.plot(df['average_accuracy_test'], color='steelblue')
     ax.set_xlabel('Run')
     ax.set_ylabel('average accuracy test', color='steelblue')
     ax2 = ax.twinx()
     ax2.plot(df['memory_used'], color='red')
     ax2.set_ylabel('memory used', color='red')
+    ax3 = ax.twinx()
+    ax3.spines.right.set_position(("axes", 1.2))
+    ax3.plot(df['needed_time'], color='green')
+    ax3.set_ylabel('needed time', color='green')
     plt.show()

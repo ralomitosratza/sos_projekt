@@ -14,7 +14,7 @@ from pynvml.smi import nvidia_smi
 
 
 class DigitIdentifier:
-    def __init__(self, train_data=None, test_data=None, epochs=1, batch_size=64, load=False, csv_index=0,
+    def __init__(self, train_data=None, test_data=None, epochs=None, batch_size=64, load=False, csv_index=0,
                  forward_dict=None, loss_fn=None, optimizer=None, lr=0.1, momentum=0.8, info=False):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.info = info
@@ -28,6 +28,7 @@ class DigitIdentifier:
         self.train_dataloader = DataLoader(self.train_data, batch_size=self.batch_size)
         self.test_dataloader = DataLoader(self.test_data, batch_size=self.batch_size)
         self.model = self.get_model(forward_dict=forward_dict, load=load, csv_index=csv_index)
+        self.best_model = None
         if load is False:
             self.loss_fn = self.get_loss_fn(loss_fn)
             self.lr = lr
@@ -38,7 +39,7 @@ class DigitIdentifier:
         self.memory_used = None
         self.memory_free = None
         self.average_accuracy_train = None
-        self.average_accuracy_test = None
+        self.average_accuracy_test = 0
         self.average_loss_train = None
         self.average_loss_test = None
 
@@ -55,11 +56,15 @@ class DigitIdentifier:
             optimizer = optim.SGD(self.model.parameters(), lr=self.lr, momentum=self.momentum)
         return optimizer
 
-    def train_model(self, epochs):
+    def train_model(self, stop_counter_max=3):
         start_time = time.time()
         correct = None
         train_loss = None
-        for epoch in range(epochs):
+        average_accuracy_test_best = -1
+        epoch = -1
+        stop_counter = 0
+        while stop_counter <= stop_counter_max:
+            epoch += 1
             self.model.train()
             train_loss, correct = 0, 0
             for batch_id, (data, target) in enumerate(self.train_dataloader):
@@ -80,15 +85,23 @@ class DigitIdentifier:
             if self.info:
                 print(f"Train Error (epoch: {epoch + 1}): Average accuracy: {(100 * correct)}%, "
                       f"Average loss: {train_loss}\n")
+            self.test_model()
+            if average_accuracy_test_best < self.average_accuracy_test:
+                average_accuracy_test_best = self.average_accuracy_test
+                self.save_all(model=True, rest=False)
+                self.epochs = epoch + 1
+                stop_counter = 0
+            else:
+                stop_counter += 1
 
+        self.average_accuracy_test = average_accuracy_test_best
+        self.needed_time = time.time() - start_time
         self.memory_total = self.get_memory_usage('total')
         self.memory_used = self.get_memory_usage('used')
         self.memory_free = self.memory_total - self.memory_used
-        self.needed_time = time.time() - start_time
         self.average_accuracy_train = 100 * correct
         self.average_loss_train = train_loss
-        self.test_model()
-        self.save_model()
+        self.save_all(model=False, rest=True)
 
     def test_model(self):
         self.model.eval()
@@ -106,20 +119,24 @@ class DigitIdentifier:
         self.average_accuracy_test = 100 * correct
         self.average_loss_test = test_loss
 
-    def save_model(self):
-        df = pd.DataFrame({'average_accuracy_test': self.average_accuracy_test,
-                           'average_loss_test': self.average_loss_test,
-                           'needed_time': self.needed_time, 'memory_used': self.memory_used/self.memory_total,
-                           'memory_total': self.memory_total, 'epochs': self.epochs, 'batch_size': self.batch_size,
-                           'loss_function': self.loss_fn, 'optimizer': self.optimizer, 'learning_rate': self.lr,
-                           'momentum': self.momentum}, index=[1])
-
+    def save_all(self, model=True, rest=True):
         path = 'panda_tables/runs.csv'
-        df.to_csv('panda_tables/runs.csv', mode='a', header=not os.path.exists(path), index=False)
-        num = len(pd.read_csv(path)) - 1
-        forward_dict = open(f'dictionarys/forward_dictionary{num}.pkl', 'wb')
-        pickle.dump(self.forward_dict, forward_dict)
-        torch.save(self.model, f"models/digit_identifier{num}.pt")
+        if os.path.exists(path):
+            num = len(pd.read_csv(path))
+        else:
+            num = 0
+        if rest is True:
+            df = pd.DataFrame({'average_accuracy_test': self.average_accuracy_test,
+                               'average_loss_test': self.average_loss_test,
+                               'needed_time': self.needed_time, 'memory_used': self.memory_used/self.memory_total,
+                               'memory_total': self.memory_total, 'epochs': self.epochs, 'batch_size': self.batch_size,
+                               'loss_function': self.loss_fn, 'optimizer': self.optimizer, 'learning_rate': self.lr,
+                               'momentum': self.momentum}, index=[1])
+            df.to_csv(path, mode='a', header=not os.path.exists(path), index=False)
+            forward_dict = open(f'dictionarys/forward_dictionary{num}.pkl', 'wb')
+            pickle.dump(self.forward_dict, forward_dict)
+        if model is True:
+            torch.save(self.model, f"models/digit_identifier{num}.pt")
 
     def try_model(self, show=5):
         shown = 0
