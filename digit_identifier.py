@@ -15,7 +15,7 @@ from pynvml.smi import nvidia_smi
 
 class DigitIdentifier:
     def __init__(self, train_data=None, test_data=None, epochs=None, batch_size=64, load=False, csv_index=0,
-                 forward_dict=None, loss_fn=None, optimizer=None, lr=0.1, momentum=0.8, info=False):
+                 forward_dict=None, loss_fn=None, optimizer=None, lr=0.1, momentum=0.8, weight_decay=0.0001, info=False):
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.info = info
         if self.info:
@@ -33,6 +33,7 @@ class DigitIdentifier:
             self.loss_fn = self.get_loss_fn(loss_fn)
             self.lr = lr
             self.momentum = momentum
+            self.weight_decay = weight_decay
             self.optimizer = self.get_optimizer(optimizer)
         self.needed_time = None
         self.memory_total = None
@@ -54,6 +55,32 @@ class DigitIdentifier:
     def get_optimizer(self, optimizer):
         if optimizer is None:
             optimizer = optim.SGD(self.model.parameters(), lr=self.lr, momentum=self.momentum)
+        elif optimizer == 'optim.SGD':
+            optimizer = optim.SGD(self.model.parameters(), lr=self.lr, momentum=self.momentum)
+        elif optimizer == 'optim.Adam':
+            optimizer = optim.Adam(self.model.parameters(), lr=self.lr, weight_decay=self.weight_decay)
+        elif optimizer == 'optim.Adadelta':
+            optimizer = optim.Adadelta(self.model.parameters())
+        elif optimizer == 'optim.Adagrad':
+            optimizer = optim.Adagrad(self.model.parameters())
+        elif optimizer == 'optim.AdamW':
+            optimizer = optim.AdamW(self.model.parameters())
+        elif optimizer == 'optim.SparseAdam':
+            optimizer = optim.SparseAdam(self.model.parameters())
+        elif optimizer == 'optim.Adamax':
+            optimizer = optim.Adamax(self.model.parameters())
+        elif optimizer == 'optim.ASGD':
+            optimizer = optim.ASGD(self.model.parameters())
+        elif optimizer == 'optim.LBFGS':
+            optimizer = optim.LBFGS(self.model.parameters())
+        elif optimizer == 'optim.NAdam':
+            optimizer = optim.NAdam(self.model.parameters())
+        elif optimizer == 'optim.RAdam':
+            optimizer = optim.RAdam(self.model.parameters())
+        elif optimizer == 'optim.RMSprop':
+            optimizer = optim.RMSprop(self.model.parameters())
+        elif optimizer == 'optim.Rprop':
+            optimizer = optim.Rprop(self.model.parameters())
         return optimizer
 
     def train_model(self, stop_counter_max=3):

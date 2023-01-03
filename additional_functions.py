@@ -1,17 +1,19 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import torch.nn.functional as f
+import torch.optim as optim
 
 
-def get_forward_sets():
-    step1_out = range(20, 50, 10)
-    step1_kernel_size = range(2, 6, 2)
-    step2_kernel_size = range(2, 3, 1)
-    step4_out = range(20, 50, 20)
-    step4_kernel_size = range(5, 6, 2)
-    step6_kernel_size = range(2, 3, 1)
-    step9_out = range(40, 90, 20)
+def get_parameter_sets():
+    step1_out = [40]
+    step1_kernel_size = [4]
+    step2_kernel_size = [2]
+    step4_out = [40]
+    step4_kernel_size = [5]
+    step6_kernel_size = [2]
+    step9_out = [60]
 
-    parameter_sets = []
+    forward_sets = []
     for s1o in step1_out:
         for s1ks in step1_kernel_size:
             for s2ks in step2_kernel_size:
@@ -33,8 +35,80 @@ def get_forward_sets():
                                        'step10': {'action': 'f.relu'},
                                        'step11': {'action': 'layer', 'layer': 'linear', 'in': s9o, 'out': 10},
                                        'step12': {'action': 'f.log_softmax', 'dim': 1}}
-                                parameter_sets.append(dic)
-    return parameter_sets
+                                forward_sets.append(dic)
+
+    batch_size = [64]
+    optimizer = ['optim.SGD']
+    sgd_lr = [0.1]
+    sgd_momentum = [0.5]
+    loss_fn = [f.nll_loss, f.cross_entropy]
+
+    para_sets = []
+
+    for opt in optimizer:
+        for lfn in loss_fn:
+            for bs in batch_size:
+                if opt == 'optim.SGD':
+                    for lr in sgd_lr:
+                        for momentum in sgd_momentum:
+                            dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': lr, 'momentum': momentum,
+                                   'weight_decay': 0}
+                            para_sets.append(dic)
+                elif opt == 'optim.Adadelta':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.Adagrad':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.AdamW':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.SparseAdam':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.Adamax':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.ASGD':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.LBFGS':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.NAdam':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.RAdam':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.RMSprop':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.Rprop':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                           'momentum': 0}
+                    para_sets.append(dic)
+                elif opt == 'optim.Adam':
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0.1, 'momentum': 0.8,
+                           'weight_decay': 0}
+                    para_sets.append(dic)
+                else:
+                    print('optimizer not treated')
+                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0.1, 'momentum': 0.8,
+                           'weight_decay': 0}
+                    para_sets.append(dic)
+
+    return forward_sets, para_sets
 
 
 def plot_pandas(start_index=0, end_index=None):
@@ -42,13 +116,14 @@ def plot_pandas(start_index=0, end_index=None):
     df = pd.read_csv(path)
     if end_index is None:
         end_index = len(pd.read_csv(path))
-    list_of_indices = list(range(start_index, end_index, 1))
+    list_of_indices = list(range(start_index, end_index + 1, 1))
     df = df.iloc[list_of_indices, :]
     fig, ax = plt.subplots(figsize=(15, 7))
     fig.subplots_adjust(right=0.75)
     ax.plot(df['average_accuracy_test'], color='steelblue')
     ax.set_xlabel('Run')
     ax.set_ylabel('average accuracy test', color='steelblue')
+    ax.axis(ymin=98, ymax=100)
     ax2 = ax.twinx()
     ax2.plot(df['memory_used'], color='red')
     ax2.set_ylabel('memory used', color='red')
