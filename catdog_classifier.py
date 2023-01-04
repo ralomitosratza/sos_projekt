@@ -88,7 +88,7 @@ class CatdogClassifier:
         epoch = -1
         stop_counter = 0
         while stop_counter <= stop_counter_max:
-            if epoch == 10:
+            if epoch == 50:
                 break
             epoch += 1
             self.model.train()
@@ -172,7 +172,6 @@ class CatdogClassifier:
                         train_data.append((torch.stack(data_list), torch.tensor(target_list)))
                         data_list = []
                         target_list = []
-            # train_data = torch.Tensor(train_data)
             torch.save(train_data, 'data/catdog/tensor_train/tensor_train.pt')
             torch.save(test_data, 'data/catdog/tensor_test/tensor_test.pt')
             data = CatdogClassifier.get_data(train=train, batch_size=batch_size)

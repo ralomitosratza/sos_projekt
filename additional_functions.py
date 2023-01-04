@@ -112,11 +112,12 @@ def get_parameter_sets(classifier='digit_identifier'):
         return forward_sets, para_sets
 
     elif classifier == 'catdog_classifier':
-        step1_out = [6]
-        step4_out = [12]
-        step7_out = [18]
-        step10_out = [24]
-        step14_out = [1000]
+        step1_out = [10]
+        step4_out = [15]
+        step7_out = [20]
+        step10_out = [30]
+        step14_out = [2000]
+        step16_out = [1000]
 
         forward_sets = []
         for s1o in step1_out:
@@ -124,24 +125,27 @@ def get_parameter_sets(classifier='digit_identifier'):
                 for s7o in step7_out:
                     for s10o in step10_out:
                         for s14o in step14_out:
-                            dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': 3, 'out': s1o, 'kernel_size': 3},
-                                   'step2': {'action': 'f.max_pool2d', 'kernel_size': 2},
-                                   'step3': {'action': 'f.relu'},
-                                   'step4': {'action': 'layer', 'layer': 'conv2d', 'in': s1o, 'out': s4o, 'kernel_size': 3},
-                                   'step5': {'action': 'f.max_pool2d', 'kernel_size': 2},
-                                   'step6': {'action': 'f.relu'},
-                                   'step7': {'action': 'layer', 'layer': 'conv2d', 'in': s4o, 'out': s7o, 'kernel_size': 3},
-                                   'step8': {'action': 'f.max_pool2d', 'kernel_size': 2},
-                                   'step9': {'action': 'f.relu'},
-                                   'step10': {'action': 'layer', 'layer': 'conv2d', 'in': s7o, 'out': s10o, 'kernel_size': 3},
-                                   'step11': {'action': 'f.max_pool2d', 'kernel_size': 2},
-                                   'step12': {'action': 'f.relu'},
-                                   'step13': {'action': 'view', 'dim1': -1},
-                                   'step14': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': s14o},
-                                   'step15': {'action': 'f.relu'},
-                                   'step16': {'action': 'layer', 'layer': 'linear', 'in': s14o, 'out': 2},
-                                   'step17': {'action': 'f.log_softmax', 'dim': 1}}
-                            forward_sets.append(dic)
+                            for s16o in step16_out:
+                                dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': 3, 'out': s1o, 'kernel_size': 3},
+                                       'step2': {'action': 'f.max_pool2d', 'kernel_size': 2},
+                                       'step3': {'action': 'f.relu'},
+                                       'step4': {'action': 'layer', 'layer': 'conv2d', 'in': s1o, 'out': s4o, 'kernel_size': 3},
+                                       'step5': {'action': 'f.max_pool2d', 'kernel_size': 2},
+                                       'step6': {'action': 'f.relu'},
+                                       'step7': {'action': 'layer', 'layer': 'conv2d', 'in': s4o, 'out': s7o, 'kernel_size': 3},
+                                       'step8': {'action': 'f.max_pool2d', 'kernel_size': 2},
+                                       'step9': {'action': 'f.relu'},
+                                       'step10': {'action': 'layer', 'layer': 'conv2d', 'in': s7o, 'out': s10o, 'kernel_size': 3},
+                                       'step11': {'action': 'f.max_pool2d', 'kernel_size': 2},
+                                       'step12': {'action': 'f.relu'},
+                                       'step13': {'action': 'view', 'dim1': -1},
+                                       'step14': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': s14o},
+                                       'step15': {'action': 'f.relu'},
+                                       'step16': {'action': 'layer', 'layer': 'linear', 'in': s14o, 'out': s16o},
+                                       'step17': {'action': 'f.relu'},
+                                       'step18': {'action': 'layer', 'layer': 'linear', 'in': s16o, 'out': 2},
+                                       'step19': {'action': 'f.log_softmax', 'dim': 1}}
+                                forward_sets.append(dic)
 
         batch_size = [64]
         optimizer = ['optim.SGD']
