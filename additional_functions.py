@@ -4,115 +4,177 @@ import torch.nn.functional as f
 import torch.optim as optim
 
 
-def get_parameter_sets():
-    step1_out = [40]
-    step1_kernel_size = [4]
-    step2_kernel_size = [2]
-    step4_out = [40]
-    step4_kernel_size = [5]
-    step6_kernel_size = [2]
-    step9_out = [60]
+def get_parameter_sets(classifier='digit_identifier'):
+    if classifier == 'digit_identifier':
+        step1_out = [40]
+        step1_kernel_size = [4]
+        step2_kernel_size = [2]
+        step4_out = [40]
+        step4_kernel_size = [5]
+        step6_kernel_size = [2]
+        step9_out = [60]
 
-    forward_sets = []
-    for s1o in step1_out:
-        for s1ks in step1_kernel_size:
-            for s2ks in step2_kernel_size:
-                for s4o in step4_out:
-                    for s4ks in step4_kernel_size:
-                        for s6ks in step6_kernel_size:
-                            for s9o in step9_out:
-                                dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': 1, 'out': s1o,
-                                                 'kernel_size': s1ks},
-                                       'step2': {'action': 'f.max_pool2d', 'kernel_size': s2ks},
-                                       'step3': {'action': 'f.relu'},
-                                       'step4': {'action': 'layer', 'layer': 'conv2d', 'in': s1o,
-                                                 'out': s4o, 'kernel_size': s4ks},
-                                       'step5': {'action': 'layer', 'layer': 'conv_dropout2d'},
-                                       'step6': {'action': 'f.max_pool2d', 'kernel_size': s6ks},
-                                       'step7': {'action': 'f.relu'},
-                                       'step8': {'action': 'view', 'dim1': -1},
-                                       'step9': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': s9o},
-                                       'step10': {'action': 'f.relu'},
-                                       'step11': {'action': 'layer', 'layer': 'linear', 'in': s9o, 'out': 10},
-                                       'step12': {'action': 'f.log_softmax', 'dim': 1}}
-                                forward_sets.append(dic)
+        forward_sets = []
+        for s1o in step1_out:
+            for s1ks in step1_kernel_size:
+                for s2ks in step2_kernel_size:
+                    for s4o in step4_out:
+                        for s4ks in step4_kernel_size:
+                            for s6ks in step6_kernel_size:
+                                for s9o in step9_out:
+                                    dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': 1, 'out': s1o,
+                                                     'kernel_size': s1ks},
+                                           'step2': {'action': 'f.max_pool2d', 'kernel_size': s2ks},
+                                           'step3': {'action': 'f.relu'},
+                                           'step4': {'action': 'layer', 'layer': 'conv2d', 'in': s1o,
+                                                     'out': s4o, 'kernel_size': s4ks},
+                                           'step5': {'action': 'layer', 'layer': 'conv_dropout2d'},
+                                           'step6': {'action': 'f.max_pool2d', 'kernel_size': s6ks},
+                                           'step7': {'action': 'f.relu'},
+                                           'step8': {'action': 'view', 'dim1': -1},
+                                           'step9': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': s9o},
+                                           'step10': {'action': 'f.relu'},
+                                           'step11': {'action': 'layer', 'layer': 'linear', 'in': s9o, 'out': 10},
+                                           'step12': {'action': 'f.log_softmax', 'dim': 1}}
+                                    forward_sets.append(dic)
 
-    batch_size = [64]
-    optimizer = ['optim.SGD']
-    sgd_lr = [0.1]
-    sgd_momentum = [0.5]
-    loss_fn = [f.nll_loss, f.cross_entropy]
+        batch_size = [64]
+        optimizer = ['optim.SGD']
+        sgd_lr = [0.1]
+        sgd_momentum = [0.5]
+        loss_fn = [f.nll_loss]
 
-    para_sets = []
+        para_sets = []
 
-    for opt in optimizer:
-        for lfn in loss_fn:
-            for bs in batch_size:
-                if opt == 'optim.SGD':
-                    for lr in sgd_lr:
-                        for momentum in sgd_momentum:
-                            dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': lr, 'momentum': momentum,
-                                   'weight_decay': 0}
-                            para_sets.append(dic)
-                elif opt == 'optim.Adadelta':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.Adagrad':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.AdamW':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.SparseAdam':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.Adamax':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.ASGD':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.LBFGS':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.NAdam':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.RAdam':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.RMSprop':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.Rprop':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
-                           'momentum': 0}
-                    para_sets.append(dic)
-                elif opt == 'optim.Adam':
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0.1, 'momentum': 0.8,
-                           'weight_decay': 0}
-                    para_sets.append(dic)
-                else:
-                    print('optimizer not treated')
-                    dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0.1, 'momentum': 0.8,
-                           'weight_decay': 0}
-                    para_sets.append(dic)
+        for opt in optimizer:
+            for lfn in loss_fn:
+                for bs in batch_size:
+                    if opt == 'optim.SGD':
+                        for lr in sgd_lr:
+                            for momentum in sgd_momentum:
+                                dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': lr,
+                                       'momentum': momentum,
+                                       'weight_decay': 0}
+                                para_sets.append(dic)
+                    elif opt == 'optim.Adadelta':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.Adagrad':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.AdamW':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.SparseAdam':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.Adamax':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.ASGD':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.LBFGS':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.NAdam':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.RAdam':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.RMSprop':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.Rprop':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0, 'weight_decay': 0,
+                               'momentum': 0}
+                        para_sets.append(dic)
+                    elif opt == 'optim.Adam':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0.1, 'momentum': 0.8,
+                               'weight_decay': 0}
+                        para_sets.append(dic)
+                    else:
+                        print('optimizer not treated')
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0.1, 'momentum': 0.8,
+                               'weight_decay': 0}
+                        para_sets.append(dic)
+        return forward_sets, para_sets
 
-    return forward_sets, para_sets
+    elif classifier == 'catdog_classifier':
+        step1_out = [6]
+        step4_out = [12]
+        step7_out = [18]
+        step10_out = [24]
+        step14_out = [1000]
+
+        forward_sets = []
+        for s1o in step1_out:
+            for s4o in step4_out:
+                for s7o in step7_out:
+                    for s10o in step10_out:
+                        for s14o in step14_out:
+                            dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': 3, 'out': s1o, 'kernel_size': 3},
+                                   'step2': {'action': 'f.max_pool2d', 'kernel_size': 2},
+                                   'step3': {'action': 'f.relu'},
+                                   'step4': {'action': 'layer', 'layer': 'conv2d', 'in': s1o, 'out': s4o, 'kernel_size': 3},
+                                   'step5': {'action': 'f.max_pool2d', 'kernel_size': 2},
+                                   'step6': {'action': 'f.relu'},
+                                   'step7': {'action': 'layer', 'layer': 'conv2d', 'in': s4o, 'out': s7o, 'kernel_size': 3},
+                                   'step8': {'action': 'f.max_pool2d', 'kernel_size': 2},
+                                   'step9': {'action': 'f.relu'},
+                                   'step10': {'action': 'layer', 'layer': 'conv2d', 'in': s7o, 'out': s10o, 'kernel_size': 3},
+                                   'step11': {'action': 'f.max_pool2d', 'kernel_size': 2},
+                                   'step12': {'action': 'f.relu'},
+                                   'step13': {'action': 'view', 'dim1': -1},
+                                   'step14': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': s14o},
+                                   'step15': {'action': 'f.relu'},
+                                   'step16': {'action': 'layer', 'layer': 'linear', 'in': s14o, 'out': 2},
+                                   'step17': {'action': 'f.log_softmax', 'dim': 1}}
+                            forward_sets.append(dic)
+
+        batch_size = [64]
+        optimizer = ['optim.SGD']
+        sgd_lr = [0.1]
+        sgd_momentum = [0.5]
+        loss_fn = [f.nll_loss]
+
+        para_sets = []
+
+        for opt in optimizer:
+            for lfn in loss_fn:
+                for bs in batch_size:
+                    if opt == 'optim.SGD':
+                        for lr in sgd_lr:
+                            for momentum in sgd_momentum:
+                                dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': lr, 'momentum': momentum,
+                                       'weight_decay': 0}
+                                para_sets.append(dic)
+                    elif opt == 'optim.Adam':
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0.01, 'momentum': 0.8,
+                               'weight_decay': 0}
+                        para_sets.append(dic)
+                    else:
+                        print('optimizer not treated')
+                        dic = {'batch_size': bs, 'loss_fn': lfn, 'optimizer': opt, 'lr': 0.1, 'momentum': 0.8,
+                               'weight_decay': 0}
+                        para_sets.append(dic)
+
+        return forward_sets, para_sets
 
 
 def plot_pandas(start_index=0, end_index=None):
-    path = 'panda_tables/runs.csv'
+    path = 'panda_tables/runs_digit_identifier.csv'
     df = pd.read_csv(path)
     if end_index is None:
         end_index = len(pd.read_csv(path))

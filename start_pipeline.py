@@ -1,22 +1,33 @@
 from digit_identifier import DigitIdentifier
-
+from catdog_classifier import CatdogClassifier
 import additional_functions as af
 from tqdm import tqdm
 
-try_sets = False
+classifier = 'catdog_classifier'
+
+try_sets = True
 if try_sets is True:
-    forward_sets, para_sets = af.get_parameter_sets()
+    forward_sets, para_sets = af.get_parameter_sets(classifier=classifier)
     print(f'Try {len(forward_sets)*len(para_sets)} different sets.')
 
     for para_set in tqdm(para_sets):
         for forward_set in forward_sets:
-            DI = DigitIdentifier(batch_size=para_set['batch_size'], forward_dict=forward_set, info=True,
-                                 loss_fn=para_set['loss_fn'], optimizer=para_set['optimizer'], lr=para_set['lr'],
-                                 momentum=para_set['momentum'], weight_decay=para_set['weight_decay'])
-            DI.train_model(stop_counter_max=3)
+            if classifier == 'digit_identifier':
+                DI = DigitIdentifier(batch_size=para_set['batch_size'], forward_dict=forward_set, info=True,
+                                     loss_fn=para_set['loss_fn'], optimizer=para_set['optimizer'], lr=para_set['lr'],
+                                     momentum=para_set['momentum'], weight_decay=para_set['weight_decay'])
+                DI.train_model(stop_counter_max=3)
+            elif classifier == 'catdog_classifier':
+                CDC = CatdogClassifier(batch_size=para_set['batch_size'], forward_dict=forward_set, info=True,
+                                       loss_fn=para_set['loss_fn'], optimizer=para_set['optimizer'], lr=para_set['lr'],
+                                       momentum=para_set['momentum'], weight_decay=para_set['weight_decay'])
+                CDC.train_model(stop_counter_max=3)
 else:
-    # start_- & end_index 0 - 31 -> Test des SGD optimizers
-    # start_- & end_index 32 - 37 -> batch_size test
-    af.plot_pandas(start_index=32, end_index=37)
-    # DI = DigitIdentifier(load=True, csv_index=10)
-    # DI.try_model(show=5)
+    if classifier == 'digit_identifier':
+        # start_- & end_index 0 - 31 -> Test des SGD optimizers
+        # start_- & end_index 32 - 37 -> batch_size test
+        af.plot_pandas(start_index=32, end_index=37)
+        # DI = DigitIdentifier(load=True, csv_index=10)
+        # DI.try_model(show=5)
+    elif classifier == 'catdog_classifier':
+        af.plot_pandas(start_index=32, end_index=37)

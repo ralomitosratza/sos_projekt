@@ -1,32 +1,31 @@
+import torch
+import os
 import pickle
 import pandas as pd
-import os
+from pynvml.smi import nvidia_smi
+import torch.optim as optim
 import time
-import torch
 import torch.nn as nn
 import torch.nn.functional as f
-import torch.optim as optim
-import matplotlib.pyplot as plt
-from torchvision import datasets
-from torchvision.transforms import ToTensor
-from torch.utils.data import DataLoader
-from pynvml.smi import nvidia_smi
+from torchvision import transforms
+from PIL import Image
+from os import listdir
+import random
 
 
-class DigitIdentifier:
-    def __init__(self, train_data=None, test_data=None, batch_size=64, load=False, csv_index=0, forward_dict=None,
-                 loss_fn=None, optimizer=None, lr=0.1, momentum=0.8, weight_decay=0.0001, info=False):
+class CatdogClassifier:
+    def __init__(self, batch_size=64, load=False, csv_index=0, forward_dict=None, loss_fn=None, optimizer=None, lr=0.1,
+                 momentum=0.8, weight_decay=0.0001, info=False):
+        self.average_accuracy_test = None
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.info = info
         if self.info:
             print(f"Using {self.device} device")
         self.epochs = None
-        self.train_data = self.get_data(train_data, train=True)
-        self.test_data = self.get_data(test_data, train=False)
         self.batch_size = batch_size
+        self.train_data = self.get_data(train=True, batch_size=self.batch_size)
+        self.test_data = self.get_data(train=False, batch_size=self.batch_size)
         self.forward_dict = forward_dict
-        self.train_dataloader = DataLoader(self.train_data, batch_size=self.batch_size)
-        self.test_dataloader = DataLoader(self.test_data, batch_size=self.batch_size)
         self.model = self.get_model(forward_dict=forward_dict, load=load, csv_index=csv_index)
         self.best_model = None
         if load is False:
@@ -44,21 +43,13 @@ class DigitIdentifier:
         self.average_loss_train = None
         self.average_loss_test = None
 
-    def get_model(self, forward_dict=None, load=False, csv_index=0):
-        path = f"models/digit_identifier/digit_identifier{csv_index}.pt"
-        if load is True and os.path.isfile(path) is True:
-            model = torch.load(path).to(self.device)
-        else:
-            model = NeuralNet(forward_dict=forward_dict).to(self.device)
-        return model
-
     def get_optimizer(self, optimizer):
         if optimizer is None:
             optimizer = optim.SGD(self.model.parameters(), lr=self.lr, momentum=self.momentum)
         elif optimizer == 'optim.SGD':
             optimizer = optim.SGD(self.model.parameters(), lr=self.lr, momentum=self.momentum)
         elif optimizer == 'optim.Adam':
-            optimizer = optim.Adam(self.model.parameters(), lr=self.lr, weight_decay=self.weight_decay)
+            optimizer = optim.Adam(self.model.parameters(), lr=self.lr)
         elif optimizer == 'optim.Adadelta':
             optimizer = optim.Adadelta(self.model.parameters())
         elif optimizer == 'optim.Adagrad':
@@ -83,6 +74,12 @@ class DigitIdentifier:
             optimizer = optim.Rprop(self.model.parameters())
         return optimizer
 
+    @staticmethod
+    def get_loss_fn(loss_fn):
+        if loss_fn is None:
+            loss_fn = f.nll_loss
+        return loss_fn
+
     def train_model(self, stop_counter_max=3):
         start_time = time.time()
         correct = None
@@ -91,11 +88,14 @@ class DigitIdentifier:
         epoch = -1
         stop_counter = 0
         while stop_counter <= stop_counter_max:
+            if epoch == 10:
+                break
             epoch += 1
             self.model.train()
             train_loss, correct = 0, 0
-            for batch_id, (data, target) in enumerate(self.train_dataloader):
+            for batch_id, (data, target) in enumerate(self.train_data):
                 data, target = data.to(self.device), target.to(self.device)
+
                 self.optimizer.zero_grad()
                 prediction = self.model(data)
 
@@ -105,10 +105,11 @@ class DigitIdentifier:
 
                 train_loss += loss.item()
                 correct += (prediction.argmax(1) == target).type(torch.float).sum().item()
-                if batch_id % 200 == 0 and self.info:
+                if (batch_id == 35 or batch_id == 70 or batch_id == 105 or batch_id == 140 or batch_id == 175) \
+                        and self.info:
                     print(f"current loss: {loss.item()} ")
             train_loss /= len(self.train_data)
-            correct /= len(self.train_dataloader.dataset)
+            correct /= (len(self.train_data)*self.batch_size)
             if self.info:
                 print(f"Train Error (epoch: {epoch + 1}): Average accuracy: {(100 * correct)}%, "
                       f"Average loss: {train_loss}\n")
@@ -130,24 +131,55 @@ class DigitIdentifier:
         self.average_loss_train = train_loss
         self.save_all(model=False, rest=True)
 
-    def test_model(self):
-        self.model.eval()
-        test_loss, correct = 0, 0
-        with torch.no_grad():
-            for data, target in self.test_dataloader:
-                data, target = data.to(self.device), target.to(self.device)
-                prediction = self.model(data)
-                test_loss += self.loss_fn(prediction, target).item()
-                correct += (prediction.argmax(1) == target).type(torch.float).sum().item()
-        test_loss /= len(self.test_dataloader)
-        correct /= len(self.test_dataloader.dataset)
-        if self.info:
-            print(f"Test Error: Accuracy: {(100 * correct)}%, Average loss: {test_loss} \n")
-        self.average_accuracy_test = 100 * correct
-        self.average_loss_test = test_loss
+    def get_model(self, forward_dict=None, load=False, csv_index=0):
+        path = f"models/catdog_classifier/catdog_classifier{csv_index}.pt"
+        if load is True and os.path.isfile(path) is True:
+            model = torch.load(path).to(self.device)
+        else:
+            model = NeuralNet(forward_dict=forward_dict).to(self.device)
+        return model
+
+    @staticmethod
+    def get_data(train=True, batch_size=64):
+        if os.path.isfile('data/catdog/tensor_train/tensor_train.pt') and train is True:
+            data = torch.load('data/catdog/tensor_train/tensor_train.pt')
+        elif os.path.isfile('data/catdog/tensor_test/tensor_test.pt') and train is False:
+            data = torch.load('data/catdog/tensor_test/tensor_test.pt')
+        else:
+            normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+            transform = transforms.Compose(
+                [transforms.Resize(128), transforms.CenterCrop(128), transforms.ToTensor(), normalize])
+
+            data_list = []
+            target_list = []
+            train_data = []
+            test_data = []
+            train_list = listdir('data/catdog/train/')
+            random.shuffle(train_list)
+            for i, tl in enumerate(train_list):
+                img = Image.open('data/catdog/train/' + tl)
+                img_tensor = transform(img)
+                data_list.append(img_tensor)
+                target = 1 if 'cat' in tl else 0
+
+                target_list.append(target)
+                if len(data_list) >= batch_size:
+                    if i <= 0.25*len(train_list):
+                        test_data.append((torch.stack(data_list), torch.tensor(target_list)))
+                        data_list = []
+                        target_list = []
+                    else:
+                        train_data.append((torch.stack(data_list), torch.tensor(target_list)))
+                        data_list = []
+                        target_list = []
+            # train_data = torch.Tensor(train_data)
+            torch.save(train_data, 'data/catdog/tensor_train/tensor_train.pt')
+            torch.save(test_data, 'data/catdog/tensor_test/tensor_test.pt')
+            data = CatdogClassifier.get_data(train=train, batch_size=batch_size)
+        return data
 
     def save_all(self, model=True, rest=True):
-        path = 'panda_tables/runs_digit_identifier.csv'
+        path = 'panda_tables/runs_catdog_classifier.csv'
         if os.path.exists(path):
             num = len(pd.read_csv(path))
         else:
@@ -160,50 +192,26 @@ class DigitIdentifier:
                                'loss_function': self.loss_fn, 'optimizer': self.optimizer, 'learning_rate': self.lr,
                                'momentum': self.momentum}, index=[1])
             df.to_csv(path, mode='a', header=not os.path.exists(path), index=False)
-            forward_dict = open(f'dictionarys/digit_identifier/forward_dictionary{num}.pkl', 'wb')
+            forward_dict = open(f'dictionarys/catdog_classifier/forward_dictionary{num}.pkl', 'wb')
             pickle.dump(self.forward_dict, forward_dict)
         if model is True:
-            torch.save(self.model, f"models/digit_identifier/digit_identifier{num}.pt")
+            torch.save(self.model, f"models/catdog_classifier/catdog_classifier{num}.pt")
 
-    def try_model(self, show=5):
-        shown = 0
+    def test_model(self):
         self.model.eval()
-        images, labels = next(iter(self.test_dataloader))
+        test_loss, correct = 0, 0
         with torch.no_grad():
-            for data, target in self.test_dataloader:
+            for data, target in self.test_data:
                 data, target = data.to(self.device), target.to(self.device)
                 prediction = self.model(data)
-                for i in range(data.size()[0]):
-                    if prediction[i].argmax(0) == target[i]:
-                        plt.title(f'Prediction: {prediction[i].argmax(0)} -> Correct!')
-                        plt.imshow(images[i].reshape(28, 28), cmap="summer")
-                        plt.show()
-                    else:
-                        plt.title(f'Prediction: {prediction[i].argmax(0)} -> Not correct!')
-                        plt.imshow(images[i].reshape(28, 28), cmap="autumn")
-                        plt.show()
-                    shown += 1
-                    if shown >= show:
-                        break
-                if shown >= show:
-                    break
-
-    @staticmethod
-    def get_data(data, train=True):
-        if data is None:
-            data = datasets.MNIST(
-                root="data",
-                train=train,
-                download=True,
-                transform=ToTensor(),
-            )
-        return data
-
-    @staticmethod
-    def get_loss_fn(loss_fn):
-        if loss_fn is None:
-            loss_fn = f.nll_loss
-        return loss_fn
+                test_loss += self.loss_fn(prediction, target).item()
+                correct += (prediction.argmax(1) == target).type(torch.float).sum().item()
+        test_loss /= len(self.test_data)
+        correct /= (len(self.test_data) * self.batch_size)
+        if self.info:
+            print(f"Test Error: Accuracy: {(100 * correct)}%, Average loss: {test_loss} \n")
+        self.average_accuracy_test = 100 * correct
+        self.average_loss_test = test_loss
 
     @staticmethod
     def get_memory_usage(option):
@@ -213,7 +221,7 @@ class DigitIdentifier:
 class NeuralNet(nn.Module):
     def __init__(self, forward_dict=None):
         super(NeuralNet, self).__init__()
-        picture_size = 28
+        picture_size = 128
         last_output = 0
         self.forward_dict = forward_dict
         self.layer_list = nn.ModuleList()
@@ -240,6 +248,10 @@ class NeuralNet(nn.Module):
                 x = x.view(self.forward_dict[step]['dim1'], self.view_dim2)
             elif self.forward_dict[step]['action'] == 'f.log_softmax':
                 x = f.log_softmax(x, dim=self.forward_dict[step]['dim'])
+            elif self.forward_dict[step]['action'] == 'f.softmax':
+                x = f.softmax(x, dim=self.forward_dict[step]['dim'])
+            elif self.forward_dict[step]['action'] == 'f.sigmoid':
+                x = f.sigmoid(x)
             else:
                 print('Failure while forward.')
         return x
