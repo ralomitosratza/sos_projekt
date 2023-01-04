@@ -10,3 +10,14 @@ Parameter Group 0
     nesterov: False
     weight_decay: 0
 )",0.1,0.5
+78.2860824742268,0.7827607141327613,153.66141939163208,0.2277507781982422,4096.0,4,64,<function nll_loss at 0x0000021D7F203790>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5

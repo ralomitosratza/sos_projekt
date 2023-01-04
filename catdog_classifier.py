@@ -2,15 +2,14 @@ import torch
 import os
 import pickle
 import pandas as pd
-from pynvml.smi import nvidia_smi
+import matplotlib.pyplot as plt
 import torch.optim as optim
 import time
-import torch.nn as nn
-import torch.nn.functional as f
+import random
+from model_functions import NeuralNet, get_loss_fn, get_memory_usage
 from torchvision import transforms
 from PIL import Image
 from os import listdir
-import random
 
 
 class CatdogClassifier:
@@ -23,13 +22,14 @@ class CatdogClassifier:
             print(f"Using {self.device} device")
         self.epochs = None
         self.batch_size = batch_size
-        self.train_data = self.get_data(train=True, batch_size=self.batch_size)
+        if not load:
+            self.train_data = self.get_data(train=True, batch_size=self.batch_size)
         self.test_data = self.get_data(train=False, batch_size=self.batch_size)
         self.forward_dict = forward_dict
         self.model = self.get_model(forward_dict=forward_dict, load=load, csv_index=csv_index)
         self.best_model = None
         if load is False:
-            self.loss_fn = self.get_loss_fn(loss_fn)
+            self.loss_fn = get_loss_fn(loss_fn)
             self.lr = lr
             self.momentum = momentum
             self.weight_decay = weight_decay
@@ -74,12 +74,6 @@ class CatdogClassifier:
             optimizer = optim.Rprop(self.model.parameters())
         return optimizer
 
-    @staticmethod
-    def get_loss_fn(loss_fn):
-        if loss_fn is None:
-            loss_fn = f.nll_loss
-        return loss_fn
-
     def train_model(self, stop_counter_max=3):
         start_time = time.time()
         correct = None
@@ -88,7 +82,7 @@ class CatdogClassifier:
         epoch = -1
         stop_counter = 0
         while stop_counter <= stop_counter_max:
-            if epoch == 50:
+            if epoch == 0:
                 break
             epoch += 1
             self.model.train()
@@ -124,8 +118,8 @@ class CatdogClassifier:
 
         self.average_accuracy_test = average_accuracy_test_best
         self.needed_time = time.time() - start_time
-        self.memory_total = self.get_memory_usage('total')
-        self.memory_used = self.get_memory_usage('used')
+        self.memory_total = get_memory_usage('total')
+        self.memory_used = get_memory_usage('used')
         self.memory_free = self.memory_total - self.memory_used
         self.average_accuracy_train = 100 * correct
         self.average_loss_train = train_loss
@@ -136,7 +130,7 @@ class CatdogClassifier:
         if load is True and os.path.isfile(path) is True:
             model = torch.load(path).to(self.device)
         else:
-            model = NeuralNet(forward_dict=forward_dict).to(self.device)
+            model = NeuralNet(forward_dict=forward_dict, picture_size=128).to(self.device)
         return model
 
     @staticmethod
@@ -212,61 +206,27 @@ class CatdogClassifier:
         self.average_accuracy_test = 100 * correct
         self.average_loss_test = test_loss
 
-    @staticmethod
-    def get_memory_usage(option):
-        return nvidia_smi.getInstance().DeviceQuery('memory.' + option)['gpu'][0]['fb_memory_usage'][option]
-
-
-class NeuralNet(nn.Module):
-    def __init__(self, forward_dict=None):
-        super(NeuralNet, self).__init__()
-        picture_size = 128
-        last_output = 0
-        self.forward_dict = forward_dict
-        self.layer_list = nn.ModuleList()
-        for step in forward_dict:
-            if forward_dict[step]['action'] == 'layer':
-                layer, picture_size, last_output = self.get_layer(forward_dict[step], picture_size, last_output)
-                self.layer_list.append(layer)
-            elif forward_dict[step]['action'] == 'f.max_pool2d':
-                picture_size = int(picture_size/forward_dict[step]['kernel_size'])
-        self.view_dim2 = picture_size*picture_size*last_output
-
-    def forward(self, x):
-        i = 0
-        for step in self.forward_dict:
-            if self.forward_dict[step]['action'] == 'layer':
-                x = self.layer_list[i](x)
-                i += 1
-
-            elif self.forward_dict[step]['action'] == 'f.max_pool2d':
-                x = f.max_pool2d(x, kernel_size=self.forward_dict[step]['kernel_size'])
-            elif self.forward_dict[step]['action'] == 'f.relu':
-                x = f.relu(x)
-            elif self.forward_dict[step]['action'] == 'view':
-                x = x.view(self.forward_dict[step]['dim1'], self.view_dim2)
-            elif self.forward_dict[step]['action'] == 'f.log_softmax':
-                x = f.log_softmax(x, dim=self.forward_dict[step]['dim'])
-            elif self.forward_dict[step]['action'] == 'f.softmax':
-                x = f.softmax(x, dim=self.forward_dict[step]['dim'])
-            elif self.forward_dict[step]['action'] == 'f.sigmoid':
-                x = f.sigmoid(x)
-            else:
-                print('Failure while forward.')
-        return x
-
-    @staticmethod
-    def get_layer(layer, size, out):
-        if layer['layer'] == 'conv2d':
-            size = size - (layer['kernel_size'] - 1)
-            out = layer['out']
-            return nn.Conv2d(layer['in'], layer['out'], kernel_size=layer['kernel_size']), size, out
-        elif layer['layer'] == 'conv_dropout2d':
-            return nn.Dropout2d(), size, out
-        elif layer['layer'] == 'linear':
-            if layer['in'] == 0:
-                return nn.Linear(size*size*out, layer['out']), size, out
-            else:
-                return nn.Linear(layer['in'], layer['out']), size, out
-        else:
-            return None
+    def try_model(self, show=5):
+        shown = 0
+        self.model.eval()
+        images, labels = next(iter(self.test_data))
+        with torch.no_grad():
+            for data, target in self.test_data:
+                data, target = data.to(self.device), target.to(self.device)
+                prediction = self.model(data)
+                for i in range(data.size()[0]):
+                    if prediction[i].argmax(0) == target[i]:
+                        catdog = 'Cat' if target[i] == 1 else 'Dog'
+                        plt.title(f'Prediction: {catdog} -> Correct!')
+                        plt.imshow(images[i].numpy()[0], cmap="summer")
+                        plt.show()
+                    else:
+                        catdog = 'Cat' if target[i] == 1 else 'Dog'
+                        plt.title(f'Prediction: {catdog} -> Not correct!')
+                        plt.imshow(images[i].numpy()[0], cmap="autumn")
+                        plt.show()
+                    shown += 1
+                    if shown >= show:
+                        break
+                if shown >= show:
+                    break

@@ -2,10 +2,10 @@ from digit_identifier import DigitIdentifier
 from catdog_classifier import CatdogClassifier
 import additional_functions as af
 from tqdm import tqdm
+# TODO: save_all auslagern - vllt auch get optimizer
+classifier = 'digit_identifier'
 
-classifier = 'catdog_classifier'
-
-try_sets = True
+try_sets = False
 if try_sets is True:
     forward_sets, para_sets = af.get_parameter_sets(classifier=classifier)
     print(f'Try {len(forward_sets)*len(para_sets)} different sets.')
@@ -25,9 +25,11 @@ if try_sets is True:
 else:
     if classifier == 'digit_identifier':
         # start_- & end_index 0 - 31 -> Test des SGD optimizers
-        # start_- & end_index 32 - 37 -> batch_size test
-        af.plot_pandas(start_index=32, end_index=37)
-        # DI = DigitIdentifier(load=True, csv_index=10)
-        # DI.try_model(show=5)
+        # start_- & end_index 32 - 38 -> batch_size test
+        # af.plot_pandas(classifier=classifier, start_index=32, end_index=38)
+        DI = DigitIdentifier(load=True, csv_index=10)
+        DI.try_model(show=5)
     elif classifier == 'catdog_classifier':
-        af.plot_pandas(start_index=32, end_index=37)
+        af.plot_pandas(classifier=classifier, start_index=0, end_index=None)
+        # CDC = CatdogClassifier(load=True, csv_index=1)
+        # CDC.try_model(show=5)
