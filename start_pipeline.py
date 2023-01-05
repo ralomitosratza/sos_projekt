@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 classifier = 'cifar10_classifier'
 
-try_sets = True
+try_sets = False
 if try_sets is True:
     forward_sets, para_sets = af.get_parameter_sets(classifier=classifier)
     print(f'Try {len(forward_sets)*len(para_sets)} different sets.')
@@ -39,3 +39,7 @@ else:
         # af.plot_pandas(classifier=classifier, start_index=0, end_index=None)
         CDC = CatdogClassifier(load=True, csv_index=1)
         CDC.try_model(show=5)
+    elif classifier == 'cifar10_classifier':
+        af.plot_pandas(classifier=classifier, start_index=0, end_index=None)
+        # C10C = Cifar10Classifier(load=True, csv_index=1)
+        # C10C.try_model(show=5)

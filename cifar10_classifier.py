@@ -118,11 +118,13 @@ class Cifar10Classifier:
                 prediction = self.model(data)
                 for i in range(data.size()[0]):
                     if prediction[i].argmax(0) == target[i]:
-                        plt.title(f'Prediction: {prediction[i].argmax(0)} -> Correct!')
+                        class_name = Cifar10Classifier.get_class_name(target_index=target[i])
+                        plt.title(f'Prediction: {class_name} -> Correct!')
                         plt.imshow(images[i].numpy()[0], cmap="summer")
                         plt.show()
                     else:
-                        plt.title(f'Prediction: {prediction[i].argmax(0)} -> Not correct!')
+                        class_name = Cifar10Classifier.get_class_name(target_index=target[i])
+                        plt.title(f'Prediction: {class_name} -> Not correct!')
                         plt.imshow(images[i].numpy()[0], cmap="autumn")
                         plt.show()
                     shown += 1
@@ -149,3 +151,28 @@ class Cifar10Classifier:
         else:
             model = NeuralNet(forward_dict=forward_dict, picture_size=32).to(self.device)
         return model
+
+    @staticmethod
+    def get_class_name(target_index):
+        if target_index == 0:
+            return  'airplane'
+        elif target_index == 1:
+            return 'automobile'
+        elif target_index == 2:
+            return 'bird'
+        elif target_index == 3:
+            return 'cat'
+        elif target_index == 4:
+            return 'deer'
+        elif target_index == 5:
+            return 'dog'
+        elif target_index == 6:
+            return 'frog'
+        elif target_index == 7:
+            return 'horse'
+        elif target_index == 8:
+            return 'ship'
+        elif target_index == 9:
+            return 'truck'
+        else:
+            return 'no class'

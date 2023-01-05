@@ -236,6 +236,8 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
         path = 'panda_tables/runs_digit_identifier.csv'
     elif classifier == 'catdog_classifier':
         path = 'panda_tables/runs_catdog_classifier.csv'
+    elif classifier == 'cifar10_classifier':
+        path = 'panda_tables/runs_cifar10_classifier.csv'
     else:
         path = ''
     df = pd.read_csv(path)
