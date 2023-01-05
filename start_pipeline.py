@@ -4,7 +4,7 @@ from cifar10_classifier import Cifar10Classifier
 import additional_functions as af
 from tqdm import tqdm
 
-classifier = 'cifar10_classifier'
+classifier = 'catdog_classifier'
 
 try_sets = False
 if try_sets is True:
@@ -38,8 +38,8 @@ else:
     elif classifier == 'catdog_classifier':
         # af.plot_pandas(classifier=classifier, start_index=0, end_index=None)
         CDC = CatdogClassifier(load=True, csv_index=1)
-        CDC.try_model(show=5)
+        CDC.try_model(show=20)
     elif classifier == 'cifar10_classifier':
-        af.plot_pandas(classifier=classifier, start_index=0, end_index=None)
-        # C10C = Cifar10Classifier(load=True, csv_index=1)
-        # C10C.try_model(show=5)
+        # af.plot_pandas(classifier=classifier, start_index=0, end_index=None)
+        C10C = Cifar10Classifier(load=True, csv_index=1)
+        C10C.try_model(show=20)

@@ -166,12 +166,12 @@ class CatdogClassifier:
                 prediction = self.model(data)
                 for i in range(data.size()[0]):
                     if prediction[i].argmax(0) == target[i]:
-                        catdog = 'Cat' if target[i] == 1 else 'Dog'
+                        catdog = 'Cat' if prediction[i].argmax(0) == 1 else 'Dog'
                         plt.title(f'Prediction: {catdog} -> Correct!')
                         plt.imshow(images[i].numpy()[0], cmap="summer")
                         plt.show()
                     else:
-                        catdog = 'Cat' if target[i] == 1 else 'Dog'
+                        catdog = 'Cat' if prediction[i].argmax(0) == 1 else 'Dog'
                         plt.title(f'Prediction: {catdog} -> Not correct!')
                         plt.imshow(images[i].numpy()[0], cmap="autumn")
                         plt.show()

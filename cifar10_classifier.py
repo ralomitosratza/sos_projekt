@@ -118,14 +118,16 @@ class Cifar10Classifier:
                 prediction = self.model(data)
                 for i in range(data.size()[0]):
                     if prediction[i].argmax(0) == target[i]:
-                        class_name = Cifar10Classifier.get_class_name(target_index=target[i])
+                        class_name = Cifar10Classifier.get_class_name(target_index=prediction[i].argmax(0))
                         plt.title(f'Prediction: {class_name} -> Correct!')
-                        plt.imshow(images[i].numpy()[0], cmap="summer")
+                        # plt.imshow(images[i].numpy()[0], cmap="summer")
+                        plt.imshow(images[i].numpy()[0])
                         plt.show()
                     else:
-                        class_name = Cifar10Classifier.get_class_name(target_index=target[i])
+                        class_name = Cifar10Classifier.get_class_name(target_index=prediction[i].argmax(0))
                         plt.title(f'Prediction: {class_name} -> Not correct!')
-                        plt.imshow(images[i].numpy()[0], cmap="autumn")
+                        # plt.imshow(images[i].numpy()[0], cmap="autumn")
+                        plt.imshow(images[i].numpy()[0])
                         plt.show()
                     shown += 1
                     if shown >= show:
@@ -155,7 +157,7 @@ class Cifar10Classifier:
     @staticmethod
     def get_class_name(target_index):
         if target_index == 0:
-            return  'airplane'
+            return 'airplane'
         elif target_index == 1:
             return 'automobile'
         elif target_index == 2:
