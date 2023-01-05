@@ -10,7 +10,7 @@ from os import listdir
 
 
 class CatdogClassifier:
-    def __init__(self, batch_size=64, load=False, csv_index=0, forward_dict=None, loss_fn=None, optimizer=None, lr=0.1,
+    def __init__(self, train_data=None, test_data=None, batch_size=64, load=False, csv_index=0, forward_dict=None, loss_fn=None, optimizer=None, lr=0.1,
                  momentum=0.8, weight_decay=0.0001, info=False):
         self.average_accuracy_test = None
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -22,9 +22,13 @@ class CatdogClassifier:
             print(f"Using {self.device} device")
         self.epochs = None
         self.batch_size = batch_size
-        if not load:
-            self.train_data = self.get_data(train=True, batch_size=self.batch_size)
-        self.test_data = self.get_data(train=False, batch_size=self.batch_size)
+        if train_data is None and test_data is None:
+            if not load:
+                self.train_data = self.get_data(train=True, batch_size=self.batch_size)
+            self.test_data = self.get_data(train=False, batch_size=self.batch_size)
+        else:
+            self.train_data = train_data
+            self.test_data = test_data
         self.forward_dict = forward_dict
         self.model = self.get_model(forward_dict=forward_dict, load=load, csv_index=csv_index)
         self.best_model = None

@@ -20,8 +20,8 @@ class Cifar10Classifier:
         if self.info:
             print(f"Using {self.device} device")
         self.epochs = None
-        self.train_data = self.get_data(train_data, train=True)
-        self.test_data = self.get_data(test_data, train=False)
+        self.train_data = self.get_data(train_data, train=True, download=False)
+        self.test_data = self.get_data(test_data, train=False, download=False)
         self.batch_size = batch_size
         self.forward_dict = forward_dict
         self.train_dataloader = DataLoader(self.train_data, batch_size=self.batch_size)
@@ -136,12 +136,12 @@ class Cifar10Classifier:
                     break
 
     @staticmethod
-    def get_data(data, train=True):
+    def get_data(data, train=True, download=True):
         if data is None:
             data = datasets.CIFAR10(
                 root="data",
                 train=train,
-                download=True,
+                download=download,
                 transform=ToTensor(),
             )
         return data
