@@ -1,5 +1,10 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as f
+import torch.optim as optim
+import os
+import pickle
+import pandas as pd
 from pynvml.smi import nvidia_smi
 
 
@@ -58,10 +63,70 @@ class NeuralNet(nn.Module):
             return None
 
 
+def get_model(self, forward_dict=None, load=False, csv_index=0, picture_size=28):
+    path = f'{self.model_path}{csv_index}.pt'
+    if load is True and os.path.isfile(path) is True:
+        model = torch.load(path).to(self.device)
+    else:
+        model = NeuralNet(forward_dict=forward_dict, picture_size=picture_size).to(self.device)
+    return model
+
+
+def save_all(model, model_save=True, rest_save=True):
+    if os.path.exists(model.csv_path):
+        num = len(pd.read_csv(model.csv_path))
+    else:
+        num = 0
+    if rest_save is True:
+        df = pd.DataFrame({'average_accuracy_test': model.average_accuracy_test,
+                           'average_loss_test': model.average_loss_test,
+                           'needed_time': model.needed_time, 'memory_used': model.memory_used/model.memory_total,
+                           'memory_total': model.memory_total, 'epochs': model.epochs, 'batch_size': model.batch_size,
+                           'loss_function': model.loss_fn, 'optimizer': model.optimizer, 'learning_rate': model.lr,
+                           'momentum': model.momentum}, index=[1])
+        df.to_csv(model.csv_path, mode='a', header=not os.path.exists(model.csv_path), index=False)
+        forward_dict = open(f'{model.dict_path}{num}.pkl', 'wb')
+        pickle.dump(model.forward_dict, forward_dict)
+    if model_save is True:
+        torch.save(model.model, f'{model.model_path}{num}.pt')
+
+
 def get_loss_fn(loss_fn):
     if loss_fn is None:
         loss_fn = f.nll_loss
     return loss_fn
+
+
+def get_optimizer(model, optimizer=None):
+    if optimizer is None:
+        optimizer = optim.SGD(model.model.parameters(), lr=model.lr, momentum=model.momentum)
+    elif optimizer == 'optim.SGD':
+        optimizer = optim.SGD(model.model.parameters(), lr=model.lr, momentum=model.momentum)
+    elif optimizer == 'optim.Adam':
+        optimizer = optim.Adam(model.model.parameters(), lr=model.lr, weight_decay=model.weight_decay)
+    elif optimizer == 'optim.Adadelta':
+        optimizer = optim.Adadelta(model.model.parameters())
+    elif optimizer == 'optim.Adagrad':
+        optimizer = optim.Adagrad(model.model.parameters())
+    elif optimizer == 'optim.AdamW':
+        optimizer = optim.AdamW(model.model.parameters())
+    elif optimizer == 'optim.SparseAdam':
+        optimizer = optim.SparseAdam(model.model.parameters())
+    elif optimizer == 'optim.Adamax':
+        optimizer = optim.Adamax(model.model.parameters())
+    elif optimizer == 'optim.ASGD':
+        optimizer = optim.ASGD(model.model.parameters())
+    elif optimizer == 'optim.LBFGS':
+        optimizer = optim.LBFGS(model.model.parameters())
+    elif optimizer == 'optim.NAdam':
+        optimizer = optim.NAdam(model.model.parameters())
+    elif optimizer == 'optim.RAdam':
+        optimizer = optim.RAdam(model.model.parameters())
+    elif optimizer == 'optim.RMSprop':
+        optimizer = optim.RMSprop(model.model.parameters())
+    elif optimizer == 'optim.Rprop':
+        optimizer = optim.Rprop(model.model.parameters())
+    return optimizer
 
 
 def get_memory_usage(option):

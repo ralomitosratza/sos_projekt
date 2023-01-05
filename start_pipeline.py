@@ -2,8 +2,8 @@ from digit_identifier import DigitIdentifier
 from catdog_classifier import CatdogClassifier
 import additional_functions as af
 from tqdm import tqdm
-# TODO: save_all auslagern - vllt auch get optimizer
-classifier = 'digit_identifier'
+
+classifier = 'catdog_classifier'
 
 try_sets = False
 if try_sets is True:
@@ -30,6 +30,6 @@ else:
         DI = DigitIdentifier(load=True, csv_index=10)
         DI.try_model(show=5)
     elif classifier == 'catdog_classifier':
-        af.plot_pandas(classifier=classifier, start_index=0, end_index=None)
-        # CDC = CatdogClassifier(load=True, csv_index=1)
-        # CDC.try_model(show=5)
+        # af.plot_pandas(classifier=classifier, start_index=0, end_index=None)
+        CDC = CatdogClassifier(load=True, csv_index=1)
+        CDC.try_model(show=5)

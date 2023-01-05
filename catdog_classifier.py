@@ -1,12 +1,9 @@
 import torch
 import os
-import pickle
-import pandas as pd
 import matplotlib.pyplot as plt
-import torch.optim as optim
 import time
 import random
-from model_functions import NeuralNet, get_loss_fn, get_memory_usage
+from model_functions import NeuralNet, get_loss_fn, get_memory_usage, save_all, get_optimizer
 from torchvision import transforms
 from PIL import Image
 from os import listdir
@@ -18,6 +15,9 @@ class CatdogClassifier:
         self.average_accuracy_test = None
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.info = info
+        self.csv_path = 'panda_tables/runs_catdog_classifier.csv'
+        self.dict_path = 'dictionarys/catdog_classifier/forward_dictionary'
+        self.model_path = 'models/catdog_classifier/catdog_classifier'
         if self.info:
             print(f"Using {self.device} device")
         self.epochs = None
@@ -33,7 +33,7 @@ class CatdogClassifier:
             self.lr = lr
             self.momentum = momentum
             self.weight_decay = weight_decay
-            self.optimizer = self.get_optimizer(optimizer)
+            self.optimizer = get_optimizer(model=self, optimizer=optimizer)
         self.needed_time = None
         self.memory_total = None
         self.memory_used = None
@@ -42,37 +42,6 @@ class CatdogClassifier:
         self.average_accuracy_test = 0
         self.average_loss_train = None
         self.average_loss_test = None
-
-    def get_optimizer(self, optimizer):
-        if optimizer is None:
-            optimizer = optim.SGD(self.model.parameters(), lr=self.lr, momentum=self.momentum)
-        elif optimizer == 'optim.SGD':
-            optimizer = optim.SGD(self.model.parameters(), lr=self.lr, momentum=self.momentum)
-        elif optimizer == 'optim.Adam':
-            optimizer = optim.Adam(self.model.parameters(), lr=self.lr)
-        elif optimizer == 'optim.Adadelta':
-            optimizer = optim.Adadelta(self.model.parameters())
-        elif optimizer == 'optim.Adagrad':
-            optimizer = optim.Adagrad(self.model.parameters())
-        elif optimizer == 'optim.AdamW':
-            optimizer = optim.AdamW(self.model.parameters())
-        elif optimizer == 'optim.SparseAdam':
-            optimizer = optim.SparseAdam(self.model.parameters())
-        elif optimizer == 'optim.Adamax':
-            optimizer = optim.Adamax(self.model.parameters())
-        elif optimizer == 'optim.ASGD':
-            optimizer = optim.ASGD(self.model.parameters())
-        elif optimizer == 'optim.LBFGS':
-            optimizer = optim.LBFGS(self.model.parameters())
-        elif optimizer == 'optim.NAdam':
-            optimizer = optim.NAdam(self.model.parameters())
-        elif optimizer == 'optim.RAdam':
-            optimizer = optim.RAdam(self.model.parameters())
-        elif optimizer == 'optim.RMSprop':
-            optimizer = optim.RMSprop(self.model.parameters())
-        elif optimizer == 'optim.Rprop':
-            optimizer = optim.Rprop(self.model.parameters())
-        return optimizer
 
     def train_model(self, stop_counter_max=3):
         start_time = time.time()
@@ -110,7 +79,7 @@ class CatdogClassifier:
             self.test_model()
             if average_accuracy_test_best < self.average_accuracy_test:
                 average_accuracy_test_best = self.average_accuracy_test
-                self.save_all(model=True, rest=False)
+                save_all(model=self, model_save=True, rest_save=False)
                 self.epochs = epoch + 1
                 stop_counter = 0
             else:
@@ -123,7 +92,7 @@ class CatdogClassifier:
         self.memory_free = self.memory_total - self.memory_used
         self.average_accuracy_train = 100 * correct
         self.average_loss_train = train_loss
-        self.save_all(model=False, rest=True)
+        save_all(model=self, model_save=False, rest_save=True)
 
     def get_model(self, forward_dict=None, load=False, csv_index=0):
         path = f"models/catdog_classifier/catdog_classifier{csv_index}.pt"
@@ -170,25 +139,6 @@ class CatdogClassifier:
             torch.save(test_data, 'data/catdog/tensor_test/tensor_test.pt')
             data = CatdogClassifier.get_data(train=train, batch_size=batch_size)
         return data
-
-    def save_all(self, model=True, rest=True):
-        path = 'panda_tables/runs_catdog_classifier.csv'
-        if os.path.exists(path):
-            num = len(pd.read_csv(path))
-        else:
-            num = 0
-        if rest is True:
-            df = pd.DataFrame({'average_accuracy_test': self.average_accuracy_test,
-                               'average_loss_test': self.average_loss_test,
-                               'needed_time': self.needed_time, 'memory_used': self.memory_used/self.memory_total,
-                               'memory_total': self.memory_total, 'epochs': self.epochs, 'batch_size': self.batch_size,
-                               'loss_function': self.loss_fn, 'optimizer': self.optimizer, 'learning_rate': self.lr,
-                               'momentum': self.momentum}, index=[1])
-            df.to_csv(path, mode='a', header=not os.path.exists(path), index=False)
-            forward_dict = open(f'dictionarys/catdog_classifier/forward_dictionary{num}.pkl', 'wb')
-            pickle.dump(self.forward_dict, forward_dict)
-        if model is True:
-            torch.save(self.model, f"models/catdog_classifier/catdog_classifier{num}.pt")
 
     def test_model(self):
         self.model.eval()
