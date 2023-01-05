@@ -55,8 +55,6 @@ class CatdogClassifier:
         epoch = -1
         stop_counter = 0
         while stop_counter <= stop_counter_max:
-            if epoch == 0:
-                break
             epoch += 1
             self.model.train()
             train_loss, correct = 0, 0

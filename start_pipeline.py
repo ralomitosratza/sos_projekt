@@ -3,7 +3,7 @@ from catdog_classifier import CatdogClassifier
 from cifar10_classifier import Cifar10Classifier
 import additional_functions as af
 from tqdm import tqdm
-
+# TODO: dropout aus dem Auskommentierten rausnehmen
 classifier_list = ['digit_identifier', 'catdog_classifier', 'cifar10_classifier']
 catdog_train_data = None
 catdog_test_data = None
