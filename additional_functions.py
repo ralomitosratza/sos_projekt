@@ -113,8 +113,8 @@ def get_parameter_sets(classifier='digit_identifier'):
 
     if classifier == 'digit_identifier' or classifier == 'catdog_classifier' or classifier == 'cifar10_classifier':
         # architecture four ---------- 3 conv, dropout, 3 linear
-        step1_out = [5, 20]  # 5, 10, 20
-        step4_out = [20, 70]  # 20, 50, 70
+        step1_out = [20]  # 5, 20
+        step4_out = [20, 70]  # 20, 70
         step7_out = [70, 100]  # 70, 100
         step12_out = [1000, 3000]  # 1000, 3000
         step14_out = [500, 1000]  # 500, 1000
@@ -183,8 +183,8 @@ def get_parameter_sets(classifier='digit_identifier'):
 
     if classifier == 'catdog_classifier' or classifier == 'cifar10_classifier':
         # architecture six -------- 4 conv, dropout, 3 linear
-        step1_out = [5, 20]  # 5, 10, 20
-        step4_out = [20, 70]  # 20, 50, 70
+        step1_out = [5, 20]  # 5, 20
+        step4_out = [20, 70]  # 20, 70
         step7_out = [70, 100]  # 70, 100
         step10_out = [100, 200]  # 100, 200
         step15_out = [1000, 3000]  # 1000, 3000
@@ -224,8 +224,8 @@ def get_parameter_sets(classifier='digit_identifier'):
 
     if classifier == '':
         # architecture seven -------- 5 conv, dropout, 2 linear
-        step1_out = [5, 20]  # 5, 10, 20
-        step4_out = [20, 70]  # 20, 50, 70
+        step1_out = [5, 20]  # 5, 20
+        step4_out = [20, 70]  # 20, 70
         step7_out = [70, 100]  # 70, 100
         step10_out = [100, 200]  # 100, 200
         step13_out = [200, 300]  # 200, 300
@@ -267,8 +267,8 @@ def get_parameter_sets(classifier='digit_identifier'):
 
     if classifier == 'catdog_classifier':
         # architecture eight -------- 5 conv, dropout, 3 linear
-        step1_out = [5, 20]  # 5, 10, 20
-        step4_out = [20, 70]  # 20, 50, 70
+        step1_out = [5, 20]  # 5, 20
+        step4_out = [20, 70]  # 20, 70
         step7_out = [70, 100]  # 70, 100
         step10_out = [100, 200]  # 100, 200
         step13_out = [200, 300]  # 200, 300
