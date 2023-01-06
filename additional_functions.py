@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import torch.nn.functional as f
+import os
+import zipfile
 
 
 def get_parameter_sets(classifier='digit_identifier'):
@@ -27,7 +29,7 @@ def get_parameter_sets(classifier='digit_identifier'):
         conv_layer_kernel_size = 0
         pool_layer_kernel_size = 0
 
-    if classifier == 'digit_identifier' or classifier == 'catdog_classifier' or classifier == 'cifar10_classifier':
+    if classifier == 'digit_identifier' or classifier == 'cifar10_classifier':
         # architecture one  --------- 2 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -51,7 +53,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                            'step12': {'action': 'f.log_softmax', 'dim': 1}}
                     forward_sets.append(dic)
 
-    if classifier == 'digit_identifier' or classifier == 'catdog_classifier' or classifier == 'cifar10_classifier':
+    if classifier == 'digit_identifier' or classifier == 'cifar10_classifier':
         # architecture two --------- 3 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -81,7 +83,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                'step15': {'action': 'f.log_softmax', 'dim': 1}}
                         forward_sets.append(dic)
 
-    if classifier == 'digit_identifier' or classifier == 'catdog_classifier' or classifier == 'cifar10_classifier':
+    if classifier == 'digit_identifier' or classifier == 'cifar10_classifier':
         # architecture three --------- 2 conv, dropout, 3 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -143,7 +145,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                    'step17': {'action': 'f.log_softmax', 'dim': 1}}
                             forward_sets.append(dic)
 
-    if classifier == 'catdog_classifier' or classifier == 'cifar10_classifier':
+    if classifier == 'cifar10_classifier':
         # architecture five -------- 4 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -220,7 +222,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                        'step20': {'action': 'f.log_softmax', 'dim': 1}}
                                 forward_sets.append(dic)
 
-    if classifier == 'catdog_classifier':
+    if classifier == '':
         # architecture seven -------- 5 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 10, 20
         step4_out = [20, 70]  # 20, 50, 70
@@ -700,3 +702,30 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
     ax3.plot(df['needed_time'], color='green')
     ax3.set_ylabel('needed time', color='green')
     plt.show()
+
+
+def zip_files():
+    with zipfile.ZipFile('models/digit_identifier' + '.zip', 'w', zipfile.ZIP_DEFLATED) as target:
+        for root, dirs, files in os.walk('models/digit_identifier'):
+            for file in files:
+                add = os.path.join(root, file)
+                target.write(add)
+                print(f'{add} wurde hinzugefügt.')
+    with zipfile.ZipFile('models/catdog_classifier' + '.zip', 'w', zipfile.ZIP_DEFLATED) as target:
+        for root, dirs, files in os.walk('models/catdog_classifier'):
+            for file in files:
+                add = os.path.join(root, file)
+                target.write(add)
+                print(f'{add} wurde hinzugefügt.')
+    with zipfile.ZipFile('models/cifar10_classifier' + '.zip', 'w', zipfile.ZIP_DEFLATED) as target:
+        for root, dirs, files in os.walk('models/cifar10_classifier'):
+            for file in files:
+                add = os.path.join(root, file)
+                target.write(add)
+                print(f'{add} wurde hinzugefügt.')
+    with zipfile.ZipFile('models' + '.zip', 'w', zipfile.ZIP_DEFLATED) as target:
+        for root, dirs, files in os.walk('models.zip'):
+            for file in files:
+                add = os.path.join(root, file)
+                target.write(add)
+                print(f'{add} wurde hinzugefügt.')
