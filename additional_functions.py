@@ -1,8 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import torch.nn.functional as f
-import os
-import zipfile
+import pickle
 
 
 def get_parameter_sets(classifier='digit_identifier'):
@@ -704,28 +703,16 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
     plt.show()
 
 
-def zip_files():
-    with zipfile.ZipFile('models/digit_identifier' + '.zip', 'w', zipfile.ZIP_DEFLATED) as target:
-        for root, dirs, files in os.walk('models/digit_identifier'):
-            for file in files:
-                add = os.path.join(root, file)
-                target.write(add)
-                print(f'{add} wurde hinzugefügt.')
-    with zipfile.ZipFile('models/catdog_classifier' + '.zip', 'w', zipfile.ZIP_DEFLATED) as target:
-        for root, dirs, files in os.walk('models/catdog_classifier'):
-            for file in files:
-                add = os.path.join(root, file)
-                target.write(add)
-                print(f'{add} wurde hinzugefügt.')
-    with zipfile.ZipFile('models/cifar10_classifier' + '.zip', 'w', zipfile.ZIP_DEFLATED) as target:
-        for root, dirs, files in os.walk('models/cifar10_classifier'):
-            for file in files:
-                add = os.path.join(root, file)
-                target.write(add)
-                print(f'{add} wurde hinzugefügt.')
-    with zipfile.ZipFile('models' + '.zip', 'w', zipfile.ZIP_DEFLATED) as target:
-        for root, dirs, files in os.walk('models.zip'):
-            for file in files:
-                add = os.path.join(root, file)
-                target.write(add)
-                print(f'{add} wurde hinzugefügt.')
+def show_set(classifier='digit_identifier', csv_index=0):
+    if classifier == 'digit_identifier':
+        path = 'dictionarys/digit_identifier/forward_dictionary'
+    elif classifier == 'catdog_classifier':
+        path = 'dictionarys/catdog_classifier/forward_dictionary'
+    elif classifier == 'cifar10_classifier':
+        path = 'dictionarys/cifar10_classifier/forward_dictionary'
+    else:
+        path = ''
+    with open(f'{path}{csv_index}.pkl', 'rb') as handle:
+        dictionary = pickle.load(handle)
+        for dic in dictionary:
+            print(dictionary[dic])
