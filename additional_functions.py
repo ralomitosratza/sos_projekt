@@ -282,7 +282,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                             for s18o in step18_out:
                                 for s20o in step20_out:
                                     i += 1
-                                    if i <= 7:
+                                    if i <= 11:
                                         continue
                                     dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': input_channels,
                                                      'out': s1o,

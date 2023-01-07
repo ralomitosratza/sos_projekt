@@ -51,9 +51,9 @@ elif try_sets is False:
             # start_- & end_index 8 - 24 -> architecture two
             # start_- & end_index 24 - 56 -> architecture four
             # start_- & end_index 56 - 120 -> architecture six
-            # start_- & end_index 120 - 127 -> architecture eight
-            # af.plot_pandas(classifier=classifier, start_index=120, end_index=127)
-            af.show_set(classifier=classifier, csv_index=126)
+            # start_- & end_index 120 - 131 -> architecture eight
+            af.plot_pandas(classifier=classifier, start_index=120, end_index=131)
+            # af.show_set(classifier=classifier, csv_index=126)
             # CDC = CatdogClassifier(load=True, csv_index=1)
             # CDC.try_model(show=20)
         elif classifier == 'cifar10_classifier':
