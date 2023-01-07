@@ -28,7 +28,7 @@ def get_parameter_sets(classifier='digit_identifier'):
         conv_layer_kernel_size = 0
         pool_layer_kernel_size = 0
 
-    if classifier == 'digit_identifier' or classifier == 'cifar10_classifier':
+    if classifier == 'cifar10_classifier':
         # architecture one  --------- 2 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -52,7 +52,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                            'step12': {'action': 'f.log_softmax', 'dim': 1}}
                     forward_sets.append(dic)
 
-    if classifier == 'digit_identifier' or classifier == 'cifar10_classifier':
+    if classifier == 'cifar10_classifier':
         # architecture two --------- 3 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -82,7 +82,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                'step15': {'action': 'f.log_softmax', 'dim': 1}}
                         forward_sets.append(dic)
 
-    if classifier == 'digit_identifier' or classifier == 'cifar10_classifier':
+    if classifier == 'cifar10_classifier':
         # architecture three --------- 2 conv, dropout, 3 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -110,7 +110,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                'step14': {'action': 'f.log_softmax', 'dim': 1}}
                         forward_sets.append(dic)
 
-    if classifier == 'digit_identifier' or classifier == 'catdog_classifier' or classifier == 'cifar10_classifier':
+    if classifier == 'cifar10_classifier':
         # architecture four ---------- 3 conv, dropout, 3 linear
         step1_out = [20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -180,7 +180,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                    'step18': {'action': 'f.log_softmax', 'dim': 1}}
                             forward_sets.append(dic)
 
-    if classifier == 'catdog_classifier' or classifier == 'cifar10_classifier':
+    if classifier == 'cifar10_classifier':
         # architecture six -------- 4 conv, dropout, 3 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -265,6 +265,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                 forward_sets.append(dic)
 
     if classifier == 'catdog_classifier':
+        i = 0
         # architecture eight -------- 5 conv, dropout, 3 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -280,6 +281,9 @@ def get_parameter_sets(classifier='digit_identifier'):
                         for s13o in step13_out:
                             for s18o in step18_out:
                                 for s20o in step20_out:
+                                    i += 1
+                                    if i <= 7:
+                                        continue
                                     dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': input_channels,
                                                      'out': s1o,
                                                      'kernel_size': conv_layer_kernel_size},

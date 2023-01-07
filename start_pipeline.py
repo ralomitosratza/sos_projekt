@@ -4,11 +4,11 @@ from cifar10_classifier import Cifar10Classifier
 import additional_functions as af
 from tqdm import tqdm
 
-classifier_list = ['digit_identifier']
+classifier_list = ['catdog_classifier']
 catdog_train_data = None
 catdog_test_data = None
-
-try_sets = False
+# TODO: dropout rausnehmen
+try_sets = True
 if try_sets is True:
     for classifier in classifier_list:
         forward_sets, para_sets = af.get_parameter_sets(classifier=classifier)
@@ -43,19 +43,21 @@ elif try_sets is False:
             # start_- & end_index 62 - 78 -> architecture three
             # start_- & end_index 78 - 110 -> architecture four
             af.plot_pandas(classifier=classifier, start_index=38, end_index=110)
-            af.show_set(classifier=classifier, csv_index=0)
+            # af.show_set(classifier=classifier, csv_index=0)
             # DI = DigitIdentifier(load=True, csv_index=10)
             # DI.try_model(show=5)
         elif classifier == 'catdog_classifier':
             # start_- & end_index 0 - 8 -> architecture one
             # start_- & end_index 8 - 24 -> architecture two
-            # start_- & end_index 24 - 40 -> architecture four
-            af.plot_pandas(classifier=classifier, start_index=0, end_index=40)
-            af.show_set(classifier=classifier, csv_index=0)
+            # start_- & end_index 24 - 56 -> architecture four
+            # start_- & end_index 56 - 120 -> architecture six
+            # start_- & end_index 120 - 127 -> architecture eight
+            # af.plot_pandas(classifier=classifier, start_index=120, end_index=127)
+            af.show_set(classifier=classifier, csv_index=126)
             # CDC = CatdogClassifier(load=True, csv_index=1)
             # CDC.try_model(show=20)
         elif classifier == 'cifar10_classifier':
             af.plot_pandas(classifier=classifier, start_index=0, end_index=None)
-            af.show_set(classifier=classifier, csv_index=0)
+            # af.show_set(classifier=classifier, csv_index=0)
             # C10C = Cifar10Classifier(load=True, csv_index=1)
             # C10C.try_model(show=20)
