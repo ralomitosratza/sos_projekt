@@ -1209,3 +1209,25 @@ Parameter Group 0
     nesterov: False
     weight_decay: 0
 )",0.1,0.5
+97.81,0.06800252116755374,59.67688512802124,0.2936687469482422,4096.0,1,64,<function nll_loss at 0x0000020A93FB6700>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+97.57000000000001,0.07855841685657443,45.4783890247345,0.30536842346191406,4096.0,1,64,<function nll_loss at 0x0000020A93FB6700>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
