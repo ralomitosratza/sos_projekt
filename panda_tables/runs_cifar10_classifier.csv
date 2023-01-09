@@ -1,0 +1,1321 @@
+average_accuracy_test,average_loss_test,needed_time,memory_used,memory_total,epochs,batch_size,loss_function,optimizer,learning_rate,momentum
+57.42,1.278639287705634,230.74941992759705,0.1667156219482422,4096.0,12,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+56.74,1.290011172841309,299.00116086006165,0.1667156219482422,4096.0,10,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+62.41,1.2006757893380087,299.95741844177246,0.1715984344482422,4096.0,11,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.41,1.2440604180287405,353.60793471336365,0.1784343719482422,4096.0,16,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+61.78,1.186690569683245,253.5226695537567,0.1784343719482422,4096.0,12,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+62.019999999999996,1.1204676772378812,271.6720006465912,0.1784343719482422,4096.0,12,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+69.89,0.9492267503100595,286.95948123931885,0.1784343719482422,4096.0,12,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.89,1.0024112781901269,255.75572323799133,0.1818523406982422,4096.0,9,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+64.98,1.0628408618793366,506.9617495536804,0.1818523406982422,4096.0,20,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.51,1.116934558388534,386.54747319221497,0.1818523406982422,4096.0,14,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.86,1.0058669337801114,461.3149423599243,0.1823406219482422,4096.0,26,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.01,1.0345302349442889,291.47476077079773,0.1823406219482422,4096.0,14,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.44,1.069404695064399,394.22366166114807,0.1823406219482422,4096.0,19,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.69,0.9784330999016002,470.4515173435211,0.1823406219482422,4096.0,22,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.21000000000001,0.9285015668838646,248.10537362098694,0.1823406219482422,4096.0,10,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.41,0.9769634065354705,264.6458857059479,0.1823406219482422,4096.0,10,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.60000000000001,0.9675687870402245,277.16665410995483,0.1823406219482422,4096.0,13,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.49,0.964810941629349,309.724720954895,0.1823406219482422,4096.0,14,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+69.19,0.9746041791454242,428.57026267051697,0.1823406219482422,4096.0,21,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.31,0.9519784864346692,365.372864484787,0.1823406219482422,4096.0,16,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.63000000000001,0.9118450633279837,378.71230006217957,0.1823406219482422,4096.0,15,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.0,0.8845790560078469,460.23573780059814,0.1823406219482422,4096.0,18,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+72.05,0.8635961747473213,461.6289327144623,0.1823406219482422,4096.0,18,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.74000000000001,0.9138348341747454,327.3818938732147,0.1823406219482422,4096.0,13,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+66.29,1.0152427914795603,340.3542380332947,0.1667156219482422,4096.0,16,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.99000000000001,1.0525271467342499,427.3836405277252,0.1720867156982422,4096.0,20,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+64.0,1.0721895778255097,268.7892165184021,0.1774578094482422,4096.0,12,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.13,1.1332236391723536,363.51496505737305,0.1833171844482422,4096.0,16,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+66.97999999999999,1.102989661845432,321.67012643814087,0.1833171844482422,4096.0,14,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.13,1.0587358383616066,313.8966884613037,0.1833171844482422,4096.0,13,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+66.67,1.1116854928101703,407.657742023468,0.1833171844482422,4096.0,19,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.12,1.173830753678729,463.4128158092499,0.1891765594482422,4096.0,20,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.66,0.9736305000675711,507.453409910202,0.1891765594482422,4096.0,22,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.07,0.9960753139416882,429.1211633682251,0.1891765594482422,4096.0,17,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.14,1.0139257406732838,436.833899974823,0.1891765594482422,4096.0,19,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.74,0.9521355545444853,446.90912556648254,0.1891765594482422,4096.0,18,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.17999999999999,0.9651670057302827,415.98788714408875,0.1891765594482422,4096.0,16,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.17999999999999,0.9503131079825626,345.078209400177,0.1891765594482422,4096.0,15,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.54,1.007617243535959,538.4600806236267,0.1891765594482422,4096.0,23,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.8,1.0707149342366844,530.2213380336761,0.1891765594482422,4096.0,21,64,<function nll_loss at 0x0000022BBCE67670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+69.06,1.0294187900367056,542.6359252929688,0.1823406219482422,4096.0,25,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.77,1.017021305811633,496.1157920360565,0.1823406219482422,4096.0,21,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.47999999999999,0.9693527551972942,292.41942167282104,0.1823406219482422,4096.0,12,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.37,0.9876056882985838,313.835604429245,0.1852703094482422,4096.0,12,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.6,0.9486188827806218,354.5809142589569,0.1852703094482422,4096.0,14,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.46000000000001,0.95052051316401,435.07019209861755,0.1852703094482422,4096.0,17,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.96000000000001,0.9377570748329163,382.0959415435791,0.1852703094482422,4096.0,16,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.87,0.9723457982585688,496.1637587547302,0.1881999969482422,4096.0,20,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+72.34,0.922803015465949,555.3159365653992,0.1881999969482422,4096.0,25,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.37,0.8704505906363201,330.9188766479492,0.1881999969482422,4096.0,13,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.35,0.9782460434421613,356.34920954704285,0.1881999969482422,4096.0,13,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+69.69,0.9064606437637548,257.83390498161316,0.1881999969482422,4096.0,8,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+75.06,0.9117239024608758,749.6667771339417,0.1881999969482422,4096.0,34,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.89,0.9078327457236636,416.22630620002747,0.1881999969482422,4096.0,17,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+72.39999999999999,0.9313654223824762,487.19439005851746,0.1881999969482422,4096.0,19,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+72.75,0.9390621350449362,499.27605628967285,0.1881999969482422,4096.0,19,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+59.830000000000005,1.2155446827791299,486.2233762741089,0.1881999969482422,4096.0,25,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+52.23,1.306060516530541,190.14374589920044,0.1881999969482422,4096.0,7,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+57.809999999999995,1.236529951262626,401.4784698486328,0.1886882781982422,4096.0,17,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+59.61,1.2318524042512202,485.8836724758148,0.1886882781982422,4096.0,23,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.79,1.0618443154984978,452.6487452983856,0.1886882781982422,4096.0,22,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+56.45,1.2415817657094093,313.98098516464233,0.1891765594482422,4096.0,13,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+61.67,1.1408380281393695,521.3500471115112,0.1891765594482422,4096.0,21,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+59.46,1.2480702438172262,375.49348521232605,0.1891765594482422,4096.0,16,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+60.660000000000004,1.1124807539259551,240.23180437088013,0.1891765594482422,4096.0,10,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+62.27,1.1485149177016727,602.4864571094513,0.1891765594482422,4096.0,29,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+60.22,1.1817573498768412,517.9547827243805,0.1891765594482422,4096.0,22,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+61.91,1.2528753056647672,421.56167435646057,0.1891765594482422,4096.0,19,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.46000000000001,1.0964117555101967,431.51724576950073,0.1891765594482422,4096.0,20,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.32,1.0744098998179101,402.7645242214203,0.1891765594482422,4096.0,17,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.22,1.070478339863431,451.6778025627136,0.1891765594482422,4096.0,17,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.09,1.0794468787825031,328.0334937572479,0.1891765594482422,4096.0,13,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.73,1.1068879388699866,429.0929789543152,0.1891765594482422,4096.0,18,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+57.13,1.2973622915091787,301.1121265888214,0.1891765594482422,4096.0,11,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.55,1.1041417588853533,585.9728667736053,0.1891765594482422,4096.0,27,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.6,1.1257049479302328,579.3057897090912,0.1891765594482422,4096.0,25,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.12,1.0336941826115749,504.145409822464,0.1891765594482422,4096.0,21,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+66.43,0.9880526916236635,485.9433693885803,0.1891765594482422,4096.0,19,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+62.86000000000001,1.271286301172463,411.245245218277,0.1891765594482422,4096.0,17,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.4,0.9596343488450263,560.57284283638,0.1891765594482422,4096.0,23,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+64.87,1.0503832458690474,501.7307405471802,0.1891765594482422,4096.0,21,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+64.48,1.0826517328335221,373.2441601753235,0.1891765594482422,4096.0,14,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.12,1.0648456458832807,558.0195956230164,0.1891765594482422,4096.0,25,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+63.51,1.1462174684378752,474.08864855766296,0.1891765594482422,4096.0,19,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.27,1.066717858906764,653.2136754989624,0.1891765594482422,4096.0,27,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.57,1.0583962623480778,403.4098904132843,0.1891765594482422,4096.0,17,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.24,0.9903292245925612,524.0584492683411,0.1891765594482422,4096.0,22,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.51,1.0621758346345014,598.0100977420807,0.1891765594482422,4096.0,24,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+64.64999999999999,1.1023869954856338,375.24603390693665,0.1891765594482422,4096.0,16,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.25,1.098901762704181,671.1585309505463,0.1891765594482422,4096.0,30,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.77,1.0884742755798777,470.1690077781677,0.1891765594482422,4096.0,18,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.49000000000001,1.1121605649875228,515.431310415268,0.1891765594482422,4096.0,23,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+65.59,1.005236093026058,371.2922148704529,0.1891765594482422,4096.0,15,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+66.75999999999999,0.9823663348604919,409.6065285205841,0.1891765594482422,4096.0,16,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.95,1.0310534869030024,543.9681529998779,0.1891765594482422,4096.0,25,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.67,0.9925714199710044,378.42676162719727,0.1891765594482422,4096.0,15,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+66.22,1.0476496451219934,481.4510283470154,0.1891765594482422,4096.0,21,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.12,1.0688895731215264,629.6750824451447,0.1891765594482422,4096.0,27,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.05,1.0222916379096403,530.7973897457123,0.1891765594482422,4096.0,25,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+67.0,1.0319004309405186,547.7328426837921,0.1891765594482422,4096.0,24,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+69.27,0.926606873797763,608.2576372623444,0.1891765594482422,4096.0,26,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+69.24,0.9617332990761776,662.879634141922,0.1891765594482422,4096.0,27,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+66.74,0.9846904885237384,444.78672766685486,0.1891765594482422,4096.0,19,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.27,0.9555061189991654,434.8610575199127,0.1891765594482422,4096.0,17,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.44,1.0523334046837631,409.9165053367615,0.1891765594482422,4096.0,17,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.76,0.9499912220201675,459.9441533088684,0.1891765594482422,4096.0,19,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.46,0.986651114597442,479.5289611816406,0.1891765594482422,4096.0,19,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+66.86999999999999,1.0180886604224042,342.72402906417847,0.1891765594482422,4096.0,12,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.19,0.8790892427134666,565.77654504776,0.1891765594482422,4096.0,24,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.41,0.8893138864997087,496.14865255355835,0.1891765594482422,4096.0,20,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.6,0.8850651459329447,538.770343542099,0.1891765594482422,4096.0,22,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.33,0.8741640869978886,521.6773686408997,0.1891765594482422,4096.0,20,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.8,0.9235090727259399,659.5310432910919,0.1891765594482422,4096.0,29,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.97,1.0057318882577737,450.93868803977966,0.1891765594482422,4096.0,18,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+70.33,0.9225389763807795,504.17637610435486,0.1891765594482422,4096.0,20,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+68.77,0.9777919274226875,581.6568515300751,0.1891765594482422,4096.0,23,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+69.19,0.9047897154358542,334.1539397239685,0.1891765594482422,4096.0,12,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+72.26,0.8539985974503171,549.6336846351624,0.1891765594482422,4096.0,22,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+71.71,0.896454881330964,512.1829104423523,0.1891765594482422,4096.0,20,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5
+72.31,0.8570479655721385,522.3524420261383,0.1891765594482422,4096.0,20,64,<function nll_loss at 0x000002655F314670>,"SGD (
+Parameter Group 0
+    dampening: 0
+    differentiable: False
+    foreach: None
+    lr: 0.1
+    maximize: False
+    momentum: 0.5
+    nesterov: False
+    weight_decay: 0
+)",0.1,0.5

@@ -28,7 +28,7 @@ def get_parameter_sets(classifier='digit_identifier'):
         conv_layer_kernel_size = 0
         pool_layer_kernel_size = 0
 
-    if classifier == 'cifar10_classifier':
+    if classifier == '':
         # architecture one  --------- 2 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -52,7 +52,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                            'step12': {'action': 'f.log_softmax', 'dim': 1}}
                     forward_sets.append(dic)
 
-    if classifier == 'cifar10_classifier':
+    if classifier == '':
         # architecture two --------- 3 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -82,7 +82,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                'step15': {'action': 'f.log_softmax', 'dim': 1}}
                         forward_sets.append(dic)
 
-    if classifier == 'cifar10_classifier':
+    if classifier == '':
         # architecture three --------- 2 conv, dropout, 3 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -112,7 +112,7 @@ def get_parameter_sets(classifier='digit_identifier'):
 
     if classifier == 'cifar10_classifier':
         # architecture four ---------- 3 conv, dropout, 3 linear
-        step1_out = [20]  # 5, 20
+        step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
         step7_out = [70, 100]  # 70, 100
         step12_out = [1000, 3000]  # 1000, 3000
@@ -144,7 +144,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                    'step17': {'action': 'f.log_softmax', 'dim': 1}}
                             forward_sets.append(dic)
 
-    if classifier == 'cifar10_classifier':
+    if classifier == '':
         # architecture five -------- 4 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
@@ -180,7 +180,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                    'step18': {'action': 'f.log_softmax', 'dim': 1}}
                             forward_sets.append(dic)
 
-    if classifier == 'cifar10_classifier':
+    if classifier == '':
         # architecture six -------- 4 conv, dropout, 3 linear
         step1_out = [5, 20]  # 5, 20
         step4_out = [20, 70]  # 20, 70
