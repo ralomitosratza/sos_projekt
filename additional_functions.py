@@ -110,39 +110,42 @@ def get_parameter_sets(classifier='digit_identifier'):
                                'step14': {'action': 'f.log_softmax', 'dim': 1}}
                         forward_sets.append(dic)
 
-    if classifier == '' or classifier == 'cifar10_classifier':
+    if classifier == 'digit_identifier':
+        i = 0
         # architecture four ---------- 3 conv, dropout, 3 linear
-        step1_out = [250, 500]  # 5, 20 ---> cifar 250, 500
-        step4_out = [500, 1000]  # 20, 70 ---> cifar 500, 1000
-        step7_out = [1200, 1500]  # 70, 100 ---> cifar 1200, 1500
-        step12_out = [5000, 8000]  # 1000, 3000 ---> cifar 5000, 8000
-        step14_out = [2500, 5000]  # 500, 1000 ---> cifar 2500, 5000
+        step1_out = [200, 700]  # 5, 20, 200, 700
+        step4_out = [1000, 1500]  # 20, 70, 1000, 1500
+        step7_out = [1500, 3000]  # 70, 100, 1500, 3000
+        step12_out = [7000, 10000]  # 1000, 3000, 7000, 10000
+        step14_out = [2500, 5000]  # 500, 1000, 2500, 5000
         for s1o in step1_out:
             for s4o in step4_out:
                 for s7o in step7_out:
                     for s12o in step12_out:
                         for s14o in step14_out:
-                            dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': input_channels, 'out': s1o,
-                                             'kernel_size': conv_layer_kernel_size},
-                                   'step2': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
-                                   'step3': {'action': 'f.relu'},
-                                   'step4': {'action': 'layer', 'layer': 'conv2d', 'in': s1o, 'out': s4o,
-                                             'kernel_size': conv_layer_kernel_size},
-                                   'step5': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
-                                   'step6': {'action': 'f.relu'},
-                                   'step7': {'action': 'layer', 'layer': 'conv2d', 'in': s4o, 'out': s7o,
-                                             'kernel_size': conv_layer_kernel_size},
-                                   'step8': {'action': 'layer', 'layer': 'conv_dropout2d'},
-                                   'step9': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
-                                   'step10': {'action': 'f.relu'},
-                                   'step11': {'action': 'view', 'dim1': -1},
-                                   'step12': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': s12o},
-                                   'step13': {'action': 'f.relu'},
-                                   'step14': {'action': 'layer', 'layer': 'linear', 'in': s12o, 'out': s14o},
-                                   'step15': {'action': 'f.relu'},
-                                   'step16': {'action': 'layer', 'layer': 'linear', 'in': s14o, 'out': output_channels},
-                                   'step17': {'action': 'f.log_softmax', 'dim': 1}}
-                            forward_sets.append(dic)
+                            i += 1
+                            if i < 5 or i > 28:
+                                dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': input_channels, 'out': s1o,
+                                                 'kernel_size': conv_layer_kernel_size},
+                                       'step2': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
+                                       'step3': {'action': 'f.relu'},
+                                       'step4': {'action': 'layer', 'layer': 'conv2d', 'in': s1o, 'out': s4o,
+                                                 'kernel_size': conv_layer_kernel_size},
+                                       'step5': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
+                                       'step6': {'action': 'f.relu'},
+                                       'step7': {'action': 'layer', 'layer': 'conv2d', 'in': s4o, 'out': s7o,
+                                                 'kernel_size': conv_layer_kernel_size},
+                                       'step8': {'action': 'layer', 'layer': 'conv_dropout2d'},
+                                       'step9': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
+                                       'step10': {'action': 'f.relu'},
+                                       'step11': {'action': 'view', 'dim1': -1},
+                                       'step12': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': s12o},
+                                       'step13': {'action': 'f.relu'},
+                                       'step14': {'action': 'layer', 'layer': 'linear', 'in': s12o, 'out': s14o},
+                                       'step15': {'action': 'f.relu'},
+                                       'step16': {'action': 'layer', 'layer': 'linear', 'in': s14o, 'out': output_channels},
+                                       'step17': {'action': 'f.log_softmax', 'dim': 1}}
+                                forward_sets.append(dic)
 
     if classifier == '':
         # architecture five -------- 4 conv, dropout, 2 linear
@@ -180,7 +183,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                                    'step18': {'action': 'f.log_softmax', 'dim': 1}}
                             forward_sets.append(dic)
 
-    if classifier == 'catdog_classifier' or classifier == 'cifar10_classifier':
+    if classifier == '':
         # architecture six -------- 4 conv, dropout, 3 linear
         step1_out = [30, 50]  # 5, 20, 30, 50
         step4_out = [100, 120]  # 20, 70, 100, 120

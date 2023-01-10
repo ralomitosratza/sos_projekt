@@ -4,7 +4,7 @@ from cifar10_classifier import Cifar10Classifier
 import additional_functions as af
 from tqdm import tqdm
 
-classifier_list = ['digit_identifier', 'catdog_classifier', 'cifar10_classifier']
+classifier_list = ['digit_identifier']
 catdog_train_data = None
 catdog_test_data = None
 
@@ -16,7 +16,7 @@ if try_sets is True:
         for forward_set in tqdm(forward_sets):
             for para_set in para_sets:
                 if classifier == 'digit_identifier':
-                    DI = DigitIdentifier(batch_size=para_set['batch_size'], forward_dict=forward_set, info=False,
+                    DI = DigitIdentifier(batch_size=para_set['batch_size'], forward_dict=forward_set, info=True,
                                          loss_fn=para_set['loss_fn'], optimizer=para_set['optimizer'], lr=para_set['lr'],
                                          momentum=para_set['momentum'], weight_decay=para_set['weight_decay'])
                     DI.train_model(stop_counter_max=3)
@@ -51,8 +51,9 @@ elif try_sets is False:
             # start_- & end_index 8 - 24 -> architecture two
             # start_- & end_index 24 - 56 -> architecture four
             # start_- & end_index 56 - 120 -> architecture six
+            # start_- & end_index 248 - 256 -> architecture six
             # start_- & end_index 120 - 248 -> architecture eight
-            af.plot_pandas(classifier=classifier, start_index=0, end_index=248)
+            af.plot_pandas(classifier=classifier, start_index=0, end_index=256)
             # af.show_set(classifier=classifier, csv_index=230)
             # CDC = CatdogClassifier(load=True, csv_index=1)
             # CDC.try_model(show=20)
@@ -60,8 +61,9 @@ elif try_sets is False:
             # start_- & end_index 0 - 8 -> architecture one
             # start_- & end_index 8 - 24 -> architecture two
             # start_- & end_index 24 - 56 -> architecture four
-            # start_- & end_index 56 - 120 -> architecture six
-            af.plot_pandas(classifier=classifier, start_index=0, end_index=120)
+            # start_- & end_index 56 - 128 -> architecture six
+
+            af.plot_pandas(classifier=classifier, start_index=0, end_index=128)
             # af.show_set(classifier=classifier, csv_index=0)
             # C10C = Cifar10Classifier(load=True, csv_index=1)
             # C10C.try_model(show=20)
