@@ -4,7 +4,7 @@ from cifar10_classifier import Cifar10Classifier
 import additional_functions as af
 from tqdm import tqdm
 
-classifier_list = ['digit_identifier']
+classifier_list = ['digit_identifier', 'catdog_classifier', 'cifar10_classifier']
 catdog_train_data = None
 catdog_test_data = None
 
@@ -45,10 +45,10 @@ elif try_sets is False:
             # start_- & end_index 46 - 62 -> architecture two
             # start_- & end_index 62 - 78 -> architecture three
             # start_- & end_index 78 - 118 -> architecture four
-            af.plot_pandas(classifier=classifier, start_index=0, end_index=118)
-            # af.show_set(classifier=classifier, csv_index=0)
-            # DI = DigitIdentifier(load=True, csv_index=10)
-            # DI.try_model(show=5)
+            # af.plot_pandas(classifier=classifier, start_index=0, end_index=118)
+            csv_index = af.show_set(classifier=classifier, csv_index='highest_accuracy')
+            DI = DigitIdentifier(load=True, csv_index=csv_index)
+            DI.try_model(show=5)
         elif classifier == 'catdog_classifier':
             # start_- & end_index 0 - 8 -> architecture one
             # start_- & end_index 8 - 24 -> architecture two
@@ -56,17 +56,16 @@ elif try_sets is False:
             # start_- & end_index 56 - 120 -> architecture six
             # start_- & end_index 248 - 256 -> architecture six
             # start_- & end_index 120 - 248 -> architecture eight
-            af.plot_pandas(classifier=classifier, start_index=0, end_index=256)
-            # af.show_set(classifier=classifier, csv_index=230)
-            # CDC = CatdogClassifier(load=True, csv_index=1)
-            # CDC.try_model(show=20)
+            # af.plot_pandas(classifier=classifier, start_index=0, end_index=256)
+            csv_index = af.show_set(classifier=classifier, csv_index='highest_accuracy')
+            CDC = CatdogClassifier(load=True, csv_index=csv_index)
+            CDC.try_model(show=20)
         elif classifier == 'cifar10_classifier':
             # start_- & end_index 0 - 8 -> architecture one
             # start_- & end_index 8 - 24 -> architecture two
             # start_- & end_index 24 - 56 -> architecture four
             # start_- & end_index 56 - 128 -> architecture six
-
-            af.plot_pandas(classifier=classifier, start_index=0, end_index=128)
-            # af.show_set(classifier=classifier, csv_index=0)
-            # C10C = Cifar10Classifier(load=True, csv_index=1)
-            # C10C.try_model(show=20)
+            # af.plot_pandas(classifier=classifier, start_index=0, end_index=128)
+            csv_index = af.show_set(classifier=classifier, csv_index='highest_accuracy')
+            C10C = Cifar10Classifier(load=True, csv_index=csv_index)
+            C10C.try_model(show=20)

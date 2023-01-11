@@ -426,13 +426,28 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
 def show_set(classifier='digit_identifier', csv_index=0):
     if classifier == 'digit_identifier':
         path = 'dictionarys/digit_identifier/forward_dictionary'
+        path_csv = 'panda_tables/runs_digit_identifier.csv'
     elif classifier == 'catdog_classifier':
         path = 'dictionarys/catdog_classifier/forward_dictionary'
+        path_csv = 'panda_tables/runs_catdog_classifier.csv'
     elif classifier == 'cifar10_classifier':
         path = 'dictionarys/cifar10_classifier/forward_dictionary'
+        path_csv = 'panda_tables/runs_cifar10_classifier.csv'
     else:
         path = ''
+        path_csv = ''
+
+    df = pd.read_csv(path_csv)
+    if csv_index == 'highest_accuracy':
+        csv_index = df['average_accuracy_test'].idxmax()
+
     with open(f'{path}{csv_index}.pkl', 'rb') as handle:
         dictionary = pickle.load(handle)
+        print(f'Classifier: {classifier},     Index: {csv_index}')
+        print(f'LAYER + LAYERSIZE')
         for dic in dictionary:
             print(dictionary[dic])
+        print(f'\nOTHER PARAMETERS')
+        print(df.iloc[csv_index])
+        print('\n\n')
+    return csv_index
