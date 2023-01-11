@@ -10,7 +10,8 @@ from os import listdir
 
 
 class CatdogClassifier:
-    def __init__(self, train_data=None, test_data=None, batch_size=64, load=False, csv_index=0, forward_dict=None, loss_fn=None, optimizer=None, lr=0.1,
+    def __init__(self, train_data=None, test_data=None, batch_size=64, load=False, csv_index=0, forward_dict=None,
+                 loss_fn=None, optimizer=None, lr=0.1,
                  momentum=0.8, weight_decay=0.0001, info=False):
         self.average_accuracy_test = None
         self.device = "cuda" if torch.cuda.is_available() else "cpu"

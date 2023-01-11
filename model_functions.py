@@ -17,7 +17,8 @@ class NeuralNet(nn.Module):
         self.layer_list = nn.ModuleList()
         for step in forward_dict:
             if forward_dict[step]['action'] == 'layer':
-                layer, self.picture_size, last_output = self.get_layer(forward_dict[step], self.picture_size, last_output)
+                layer, self.picture_size, last_output = self.get_layer(forward_dict[step], self.picture_size,
+                                                                       last_output)
                 self.layer_list.append(layer)
             elif forward_dict[step]['action'] == 'f.max_pool2d':
                 self.picture_size = int(self.picture_size/forward_dict[step]['kernel_size'])

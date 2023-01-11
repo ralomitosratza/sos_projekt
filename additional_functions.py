@@ -124,7 +124,7 @@ def get_parameter_sets(classifier='digit_identifier'):
                     for s12o in step12_out:
                         for s14o in step14_out:
                             i += 1
-                            if i < 5 or i > 28:
+                            if i > 29:
                                 dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': input_channels, 'out': s1o,
                                                  'kernel_size': conv_layer_kernel_size},
                                        'step2': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
@@ -143,7 +143,8 @@ def get_parameter_sets(classifier='digit_identifier'):
                                        'step13': {'action': 'f.relu'},
                                        'step14': {'action': 'layer', 'layer': 'linear', 'in': s12o, 'out': s14o},
                                        'step15': {'action': 'f.relu'},
-                                       'step16': {'action': 'layer', 'layer': 'linear', 'in': s14o, 'out': output_channels},
+                                       'step16': {'action': 'layer', 'layer': 'linear', 'in': s14o,
+                                                  'out': output_channels},
                                        'step17': {'action': 'f.log_softmax', 'dim': 1}}
                                 forward_sets.append(dic)
 
