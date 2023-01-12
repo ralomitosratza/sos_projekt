@@ -392,13 +392,23 @@ def get_parameter_sets(classifier='digit_identifier'):
     return forward_sets, para_sets
 
 
-def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
+def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None, architecture=False):
     if classifier == 'digit_identifier':
         path = 'panda_tables/runs_digit_identifier.csv'
+        x = ['one', 'two', 'three', 'four']
+        x_ticks = [38, 46, 62, 78]
     elif classifier == 'catdog_classifier':
         path = 'panda_tables/runs_catdog_classifier.csv'
+        x = ['one', 'two', 'four', 'six', 'eight', 'six']
+        x_ticks = [0, 8, 24, 56, 120, 248]
     elif classifier == 'cifar10_classifier':
+        # start_- & end_index 0 - 8 -> architecture one
+        # start_- & end_index 8 - 24 -> architecture two
+        # start_- & end_index 24 - 56 -> architecture four
+        # start_- & end_index 56 - 128 -> architecture six
         path = 'panda_tables/runs_cifar10_classifier.csv'
+        x = ['one', 'two', 'four', 'six']
+        x_ticks = [0, 8, 24, 56]
     else:
         path = ''
     df = pd.read_csv(path)
@@ -411,7 +421,11 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
     fig.subplots_adjust(right=0.75)
     plt.title(classifier)
     ax.plot(df['average_accuracy_test'], color='steelblue')
-    ax.set_xlabel('Run')
+    if architecture is True:
+        plt.xticks(x_ticks, x)
+        ax.set_xlabel('Architecture')
+    else:
+        ax.set_xlabel('Run')
     ax.set_ylabel('average accuracy test', color='steelblue')
     if classifier == 'digit_identifier':
         ax.axis(ymin=98, ymax=100)
