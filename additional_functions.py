@@ -402,15 +402,13 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None, ar
         x = ['one', 'two', 'four', 'six', 'eight', 'six']
         x_ticks = [0, 8, 24, 56, 120, 248]
     elif classifier == 'cifar10_classifier':
-        # start_- & end_index 0 - 8 -> architecture one
-        # start_- & end_index 8 - 24 -> architecture two
-        # start_- & end_index 24 - 56 -> architecture four
-        # start_- & end_index 56 - 128 -> architecture six
         path = 'panda_tables/runs_cifar10_classifier.csv'
         x = ['one', 'two', 'four', 'six']
         x_ticks = [0, 8, 24, 56]
     else:
         path = ''
+        x = []
+        x_ticks = []
     df = pd.read_csv(path)
     if end_index is None:
         end_index = len(pd.read_csv(path))
@@ -433,9 +431,13 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None, ar
     ax2.plot(df['memory_used'], color='red')
     ax2.set_ylabel('memory used', color='red')
     ax3 = ax.twinx()
-    ax3.spines.right.set_position(("axes", 1.2))
+    ax3.spines.right.set_position(("axes", 1.07))
     ax3.plot(df['needed_time'], color='green')
     ax3.set_ylabel('needed time', color='green')
+    if architecture is True:
+        plt.savefig(f'pics/{classifier}_architecture.png', bbox_inches='tight' )
+    else:
+        plt.savefig(f'pics/{classifier}_runs.png', bbox_inches='tight')
     plt.show()
 
 
@@ -518,7 +520,8 @@ def show_means(classifier='digit_identifier'):
     ax2.plot(df['mean_memory_used'], color='red')
     ax2.set_ylabel('mean_memory used', color='red')
     ax3 = ax.twinx()
-    ax3.spines.right.set_position(("axes", 1.2))
+    ax3.spines.right.set_position(("axes", 1.07))
     ax3.plot(df['mean_needed_time'], color='green')
     ax3.set_ylabel('mean_needed time', color='green')
+    plt.savefig(f'pics/{classifier}_mean.png', bbox_inches='tight')
     plt.show()
