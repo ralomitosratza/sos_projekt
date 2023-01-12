@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import torch.nn.functional as f
 import pickle
+import os
 
 
 def get_parameter_sets(classifier='digit_identifier'):
@@ -408,6 +409,7 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
     df = df.iloc[list_of_indices, :]
     fig, ax = plt.subplots(figsize=(15, 7))
     fig.subplots_adjust(right=0.75)
+    plt.title(classifier)
     ax.plot(df['average_accuracy_test'], color='steelblue')
     ax.set_xlabel('Run')
     ax.set_ylabel('average accuracy test', color='steelblue')
@@ -451,3 +453,58 @@ def show_set(classifier='digit_identifier', csv_index=0):
         print(df.iloc[csv_index])
         print('\n\n')
     return csv_index
+
+
+def save_means_of_csv_to_csv(classifier='digit_identifier', architecture='one', start_index=0, end_index=0):
+    if classifier == 'digit_identifier':
+        path_csv = 'panda_tables/runs_digit_identifier.csv'
+        path_mean = 'panda_tables/mean_digit_identifier.csv'
+    elif classifier == 'catdog_classifier':
+        path_csv = 'panda_tables/runs_catdog_classifier.csv'
+        path_mean = 'panda_tables/mean_catdog_classifier.csv'
+    elif classifier == 'cifar10_classifier':
+        path_csv = 'panda_tables/runs_cifar10_classifier.csv'
+        path_mean = 'panda_tables/mean_cifar10_classifier.csv'
+    else:
+        path_csv = ''
+        path_mean = ''
+
+    df = pd.read_csv(path_csv)
+    specific_rows = df.iloc[start_index:end_index]
+    mean_average_accuracy_test = specific_rows['average_accuracy_test'].mean()
+    mean_needed_time = specific_rows['needed_time'].mean()
+    mean_memory_used = specific_rows['memory_used'].mean()
+    df = pd.DataFrame({'architecture': architecture, 'mean_average_accuracy_test': mean_average_accuracy_test,
+                       'mean_needed_time': mean_needed_time, 'mean_memory_used': mean_memory_used}, index=[1])
+    df.to_csv(path_mean, mode='a', header=not os.path.exists(path_mean), index=False)
+
+
+def show_means(classifier='digit_identifier'):
+    if classifier == 'digit_identifier':
+        path = 'panda_tables/mean_digit_identifier.csv'
+    elif classifier == 'catdog_classifier':
+        path = 'panda_tables/mean_catdog_classifier.csv'
+    elif classifier == 'cifar10_classifier':
+        path = 'panda_tables/mean_cifar10_classifier.csv'
+    else:
+        path = ''
+
+    df = pd.read_csv(path)
+    x = list(df.loc[:, 'architecture'].values)
+    plt.rcParams['figure.autolayout'] = True
+    fig, ax = plt.subplots(figsize=(15, 7))
+    fig.subplots_adjust(right=0.75)
+    plt.title(classifier)
+    x_ticks = range(len(x))
+    plt.xticks(x_ticks, x)
+    ax.plot(df['mean_average_accuracy_test'], color='steelblue')
+    ax.set_xlabel('Architecture')
+    ax.set_ylabel('mean_average accuracy test', color='steelblue')
+    ax2 = ax.twinx()
+    ax2.plot(df['mean_memory_used'], color='red')
+    ax2.set_ylabel('mean_memory used', color='red')
+    ax3 = ax.twinx()
+    ax3.spines.right.set_position(("axes", 1.2))
+    ax3.plot(df['mean_needed_time'], color='green')
+    ax3.set_ylabel('mean_needed time', color='green')
+    plt.show()
