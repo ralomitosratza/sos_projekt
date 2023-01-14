@@ -395,19 +395,22 @@ def get_parameter_sets(classifier='digit_identifier'):
 def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
     if classifier == 'digit_identifier':
         path = 'panda_tables/runs_digit_identifier.csv'
-        x = ['one', 'two', 'three', 'four']
+        x = ['G1', 'G2', 'G3', 'G4']
         x_ticks = [38, 46, 62, 78]
         x1 = [40, 50, 60, 70, 80, 90, 100, 110, 120]
+        classifier = 'MNIST Datensatz'
     elif classifier == 'catdog_classifier':
         path = 'panda_tables/runs_catdog_classifier.csv'
-        x = ['one', 'two', 'four', 'six', 'eight', 'six']
+        x = ['G1', 'G2', 'G4', 'G5', 'G6', 'G5']
         x_ticks = [0, 8, 24, 56, 120, 248]
         x1 = [0, 50, 100, 150, 200, 250]
+        classifier = 'Hunde und Katzen Datensatz'
     elif classifier == 'cifar10_classifier':
         path = 'panda_tables/runs_cifar10_classifier.csv'
-        x = ['one', 'two', 'four', 'six']
+        x = ['G1', 'G2', 'G4', 'G5']
         x_ticks = [0, 8, 24, 56]
         x1 = [0, 20, 40, 60, 80, 100, 120]
+        classifier = 'Cifar10 Datensatz'
     else:
         path = ''
         x = []
@@ -421,25 +424,28 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
     df = df.iloc[list_of_indices, :]
     fig, ax = plt.subplots(figsize=(15, 7))
     fig.subplots_adjust(right=0.75)
-    plt.title(classifier)
+    plt.title(classifier, fontsize=20, weight='bold')
     ax.plot(df['average_accuracy_test'], color='steelblue')
-    plt.xticks(x_ticks, x)
-    ax.set_xlabel('Architecture')
-    ax.set_ylabel('average accuracy test (%)', color='steelblue')
-    if classifier == 'digit_identifier':
+    plt.xticks(x_ticks, x, fontsize=15)
+    plt.yticks(fontsize=15)
+    ax.set_xlabel('Architecture', fontsize=15)
+    ax.set_ylabel('average accuracy test (%)', color='steelblue', fontsize=15)
+    if classifier == 'MNIST Datensatz':
         ax.axis(ymin=98, ymax=100)
     ax2 = ax.twinx()
+    plt.yticks(fontsize=15)
     ax2.plot(df['memory_used']*100, color='red')
-    ax2.set_ylabel('memory used (%)', color='red')
+    ax2.set_ylabel('memory used (%)', color='red', fontsize=15)
     ax3 = ax.twinx()
-    ax3.spines.right.set_position(("axes", 1.07))
+    ax3.spines.right.set_position(("axes", 1.08))
+    plt.yticks(fontsize=15)
     ax3.plot(df['needed_time'], color='green')
-    ax3.set_ylabel('needed time (s)', color='green')
+    ax3.set_ylabel('needed time (s)', color='green', fontsize=15)
     axx = ax.twiny()
     axx.set_xlim(ax.get_xlim())
     axx.set_xticks(x1)
-    axx.set_xticklabels(x1)
-    axx.set_xlabel('Run')
+    axx.set_xticklabels(x1, fontsize=15)
+    axx.set_xlabel('Run', fontsize=15)
     plt.savefig(f'pics/{classifier}.png', bbox_inches='tight')
     plt.show()
 
