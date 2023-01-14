@@ -392,23 +392,27 @@ def get_parameter_sets(classifier='digit_identifier'):
     return forward_sets, para_sets
 
 
-def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None, architecture=False):
+def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
     if classifier == 'digit_identifier':
         path = 'panda_tables/runs_digit_identifier.csv'
         x = ['one', 'two', 'three', 'four']
         x_ticks = [38, 46, 62, 78]
+        x1 = [40, 50, 60, 70, 80, 90, 100, 110, 120]
     elif classifier == 'catdog_classifier':
         path = 'panda_tables/runs_catdog_classifier.csv'
         x = ['one', 'two', 'four', 'six', 'eight', 'six']
         x_ticks = [0, 8, 24, 56, 120, 248]
+        x1 = [0, 50, 100, 150, 200, 250]
     elif classifier == 'cifar10_classifier':
         path = 'panda_tables/runs_cifar10_classifier.csv'
         x = ['one', 'two', 'four', 'six']
         x_ticks = [0, 8, 24, 56]
+        x1 = [0, 20, 40, 60, 80, 100, 120]
     else:
         path = ''
         x = []
         x_ticks = []
+        x1 = []
     df = pd.read_csv(path)
     if end_index is None:
         end_index = len(pd.read_csv(path))
@@ -419,25 +423,24 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None, ar
     fig.subplots_adjust(right=0.75)
     plt.title(classifier)
     ax.plot(df['average_accuracy_test'], color='steelblue')
-    if architecture is True:
-        plt.xticks(x_ticks, x)
-        ax.set_xlabel('Architecture')
-    else:
-        ax.set_xlabel('Run')
-    ax.set_ylabel('average accuracy test', color='steelblue')
+    plt.xticks(x_ticks, x)
+    ax.set_xlabel('Architecture')
+    ax.set_ylabel('average accuracy test (%)', color='steelblue')
     if classifier == 'digit_identifier':
         ax.axis(ymin=98, ymax=100)
     ax2 = ax.twinx()
-    ax2.plot(df['memory_used'], color='red')
-    ax2.set_ylabel('memory used', color='red')
+    ax2.plot(df['memory_used']*100, color='red')
+    ax2.set_ylabel('memory used (%)', color='red')
     ax3 = ax.twinx()
     ax3.spines.right.set_position(("axes", 1.07))
     ax3.plot(df['needed_time'], color='green')
-    ax3.set_ylabel('needed time', color='green')
-    if architecture is True:
-        plt.savefig(f'pics/{classifier}_architecture.png', bbox_inches='tight' )
-    else:
-        plt.savefig(f'pics/{classifier}_runs.png', bbox_inches='tight')
+    ax3.set_ylabel('needed time (s)', color='green')
+    axx = ax.twiny()
+    axx.set_xlim(ax.get_xlim())
+    axx.set_xticks(x1)
+    axx.set_xticklabels(x1)
+    axx.set_xlabel('Run')
+    plt.savefig(f'pics/{classifier}.png', bbox_inches='tight')
     plt.show()
 
 
@@ -515,13 +518,13 @@ def show_means(classifier='digit_identifier'):
     plt.xticks(x_ticks, x)
     ax.plot(df['mean_average_accuracy_test'], color='steelblue')
     ax.set_xlabel('Architecture')
-    ax.set_ylabel('mean_average accuracy test', color='steelblue')
+    ax.set_ylabel('mean_average accuracy test (%)', color='steelblue')
     ax2 = ax.twinx()
-    ax2.plot(df['mean_memory_used'], color='red')
-    ax2.set_ylabel('mean_memory used', color='red')
+    ax2.plot(df['mean_memory_used']*100, color='red')
+    ax2.set_ylabel('mean_memory used (%)', color='red')
     ax3 = ax.twinx()
     ax3.spines.right.set_position(("axes", 1.07))
     ax3.plot(df['mean_needed_time'], color='green')
-    ax3.set_ylabel('mean_needed time', color='green')
+    ax3.set_ylabel('mean_needed time (s)', color='green')
     plt.savefig(f'pics/{classifier}_mean.png', bbox_inches='tight')
     plt.show()
