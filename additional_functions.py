@@ -29,6 +29,30 @@ def get_parameter_sets(classifier='digit_identifier'):
         conv_layer_kernel_size = 0
         pool_layer_kernel_size = 0
 
+    # Das sind die genutzten Bausteine. Alle hier genutzten Architekturen bestehen daraus. Sie können wir unten
+    #   vorgemacht "einfach" zusammenkopiert werden.
+    # B1 = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': input_channels, 'out': output_channels,
+    #                 'kernel_size': conv_layer_kernel_size},
+    #       'step2': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
+    #       'step3': {'action': 'f.relu'}}
+    #
+    # B2 = {'step4': {'action': 'layer', 'layer': 'conv2d', 'in': input_channels, 'out': output_channels,
+    #                 'kernel_size': conv_layer_kernel_size},
+    #       'step5': {'action': 'layer', 'layer': 'conv_dropout2d'},
+    #       'step6': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
+    #       'step7': {'action': 'f.relu'}}
+    #
+    # B3 = {'step8': {'action': 'view', 'dim1': -1},
+    #       'step9': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': output_channels},
+    #       'step10': {'action': 'f.relu'}}
+    #
+    # B4 = {'step11': {'action': 'layer', 'layer': 'linear', 'in': input_channels, 'out': output_channels},
+    #       'step12': {'action': 'f.relu'}}
+    #
+    # B5 = {'step11': {'action': 'layer', 'layer': 'linear', 'in': input_channels, 'out': output_channels},
+    #       'step12': {'action': 'f.log_softmax', 'dim': 1}}
+
+    # classifier == 'digit_identifier' z.B. Einfach den classifier, für den man die Architektur möchte eingeben.
     if classifier == '':
         # architecture one  --------- 2 conv, dropout, 2 linear
         step1_out = [5, 20]  # 5, 20
@@ -85,10 +109,10 @@ def get_parameter_sets(classifier='digit_identifier'):
 
     if classifier == '':
         # architecture three --------- 2 conv, dropout, 3 linear
-        step1_out = [100]  # 5, 20 ---> digit 50, 100
-        step4_out = [200]  # 20, 70 ---> digit 100, 200
-        step9_out = [4000]  # 1000, 3000 ---> digit 2500, 4000
-        step11_out = [2000]  # 500, 1000 ---> digit 1000, 2000
+        step1_out = [100]  # 5, 20
+        step4_out = [200]  # 20, 70
+        step9_out = [4000]  # 1000, 3000
+        step11_out = [2000]  # 500, 1000
         for s1o in step1_out:
             for s4o in step4_out:
                 for s9o in step9_out:
@@ -112,7 +136,6 @@ def get_parameter_sets(classifier='digit_identifier'):
                         forward_sets.append(dic)
 
     if classifier == 'digit_identifier':
-        i = 0
         # architecture four ---------- 3 conv, dropout, 3 linear
         step1_out = [200, 700]  # 5, 20, 200, 700
         step4_out = [1000, 1500]  # 20, 70, 1000, 1500
@@ -124,30 +147,28 @@ def get_parameter_sets(classifier='digit_identifier'):
                 for s7o in step7_out:
                     for s12o in step12_out:
                         for s14o in step14_out:
-                            i += 1
-                            if i > 29:
-                                dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': input_channels, 'out': s1o,
-                                                 'kernel_size': conv_layer_kernel_size},
-                                       'step2': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
-                                       'step3': {'action': 'f.relu'},
-                                       'step4': {'action': 'layer', 'layer': 'conv2d', 'in': s1o, 'out': s4o,
-                                                 'kernel_size': conv_layer_kernel_size},
-                                       'step5': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
-                                       'step6': {'action': 'f.relu'},
-                                       'step7': {'action': 'layer', 'layer': 'conv2d', 'in': s4o, 'out': s7o,
-                                                 'kernel_size': conv_layer_kernel_size},
-                                       'step8': {'action': 'layer', 'layer': 'conv_dropout2d'},
-                                       'step9': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
-                                       'step10': {'action': 'f.relu'},
-                                       'step11': {'action': 'view', 'dim1': -1},
-                                       'step12': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': s12o},
-                                       'step13': {'action': 'f.relu'},
-                                       'step14': {'action': 'layer', 'layer': 'linear', 'in': s12o, 'out': s14o},
-                                       'step15': {'action': 'f.relu'},
-                                       'step16': {'action': 'layer', 'layer': 'linear', 'in': s14o,
-                                                  'out': output_channels},
-                                       'step17': {'action': 'f.log_softmax', 'dim': 1}}
-                                forward_sets.append(dic)
+                            dic = {'step1': {'action': 'layer', 'layer': 'conv2d', 'in': input_channels, 'out': s1o,
+                                             'kernel_size': conv_layer_kernel_size},
+                                   'step2': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
+                                   'step3': {'action': 'f.relu'},
+                                   'step4': {'action': 'layer', 'layer': 'conv2d', 'in': s1o, 'out': s4o,
+                                             'kernel_size': conv_layer_kernel_size},
+                                   'step5': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
+                                   'step6': {'action': 'f.relu'},
+                                   'step7': {'action': 'layer', 'layer': 'conv2d', 'in': s4o, 'out': s7o,
+                                             'kernel_size': conv_layer_kernel_size},
+                                   'step8': {'action': 'layer', 'layer': 'conv_dropout2d'},
+                                   'step9': {'action': 'f.max_pool2d', 'kernel_size': pool_layer_kernel_size},
+                                   'step10': {'action': 'f.relu'},
+                                   'step11': {'action': 'view', 'dim1': -1},
+                                   'step12': {'action': 'layer', 'layer': 'linear', 'in': 0, 'out': s12o},
+                                   'step13': {'action': 'f.relu'},
+                                   'step14': {'action': 'layer', 'layer': 'linear', 'in': s12o, 'out': s14o},
+                                   'step15': {'action': 'f.relu'},
+                                   'step16': {'action': 'layer', 'layer': 'linear', 'in': s14o,
+                                              'out': output_channels},
+                                   'step17': {'action': 'f.log_softmax', 'dim': 1}}
+                            forward_sets.append(dic)
 
     if classifier == '':
         # architecture five -------- 4 conv, dropout, 2 linear
@@ -317,6 +338,10 @@ def get_parameter_sets(classifier='digit_identifier'):
                                            'step23': {'action': 'f.log_softmax', 'dim': 1}}
                                     forward_sets.append(dic)
 
+    # Hier können theoretisch die Batch-Size, der Optimizer und die Loss Funktion eingestellt werden. Dabei ist darauf zu achten,
+    # dass sie in model_functions berücksichtigt sind.
+    # Aktuell werden 'optim.SGD' und 'optim.Adam' berücksichtigt
+    # Für die Loss-Funktion können alle f. - Loss Funktionen genutzt werden.
     batch_size = [64]
     optimizer = ['optim.SGD']
     sgd_lr = [0.1]
@@ -392,6 +417,7 @@ def get_parameter_sets(classifier='digit_identifier'):
     return forward_sets, para_sets
 
 
+# Die Funktion plottet die Ergebnisse für den eingegebenen Datensatz übersichtlich von start- bis end-Index
 def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
     if classifier == 'digit_identifier':
         path = 'panda_tables/runs_digit_identifier.csv'
@@ -450,6 +476,7 @@ def plot_pandas(classifier='digit_identifier', start_index=0, end_index=None):
     plt.show()
 
 
+# Die Funktion zeigt die Architektur sowie die gespeicherten Daten für den csv_index und den eingegebenen Classifier
 def show_set(classifier='digit_identifier', csv_index=0):
     if classifier == 'digit_identifier':
         path = 'dictionarys/digit_identifier/forward_dictionary'
@@ -480,6 +507,7 @@ def show_set(classifier='digit_identifier', csv_index=0):
     return csv_index
 
 
+# Speichert die Durchschnitte der einzelnen Architekturen.
 def save_means_of_csv_to_csv(classifier='digit_identifier', architecture='one', start_index=0, end_index=0):
     if classifier == 'digit_identifier':
         path_csv = 'panda_tables/runs_digit_identifier.csv'
@@ -504,6 +532,7 @@ def save_means_of_csv_to_csv(classifier='digit_identifier', architecture='one', 
     df.to_csv(path_mean, mode='a', header=not os.path.exists(path_mean), index=False)
 
 
+# Plottet die gespeicherten Durchschnitte der einzelnen Architekturen
 def show_means(classifier='digit_identifier'):
     if classifier == 'digit_identifier':
         path = 'panda_tables/mean_digit_identifier.csv'

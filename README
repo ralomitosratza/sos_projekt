@@ -1,0 +1,24 @@
+Author: Mirco Felske, 17.01.23
+
+
+start_pipeline: Es kann angegeben werden, für welchen Datensatz die DNNs erstellt werden sollen.
+                Alle angegebenen werden automatisch getestet.
+                Mit try_sets = True werden die DNNs erstellt, trainiert und getestet.
+                Mit try_sets = False können Daten entnommen werden. Siehe dafür die auskommentierten Funktionen im else-Zweig.
+
+additional_functions:   Architekturen sowie zu Prüfende Parameter können festgelegt werden.
+                        Orientierung an den schon vorhandenen Architekturen.
+
+model_functions:    Alle Funktionen, die von allen DNNs benutzt werden können.
+
+digit_identifier, catdog_classifier, cifar10_classifier:    Alle Funktionen die Datensatz spezifisch sind.
+
+\models:    Alle trainierten Modelle
+
+\dictionarys:   Alle genutzen Architekturen, passend zu dem Index in \models.
+
+\panda_tables: Alle sonstigen Daten, gespeichert in einer csv Datei, passend zu dem Index in \models.
+
+\pics:  Alle Abbildungen.
+
+Für weitere Erläuterungen siehe Funktionsbeschreibungen

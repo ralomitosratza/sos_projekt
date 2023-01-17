@@ -8,6 +8,9 @@ import pandas as pd
 from pynvml.smi import nvidia_smi
 
 
+# Baut ein neuronales Netz anhand des eingegebenen Forward-Sets auf, solange alle In und Outputs passen.
+# Wenn man sich an die Vorlagen hält, passen die.
+# Die picture_size, muss hier beim Aufruf dem Datensatz angepasst werden. Das passiert in den spezifischen Dateien.
 class NeuralNet(nn.Module):
     def __init__(self, forward_dict=None, picture_size=28):
         super(NeuralNet, self).__init__()
@@ -64,15 +67,7 @@ class NeuralNet(nn.Module):
             return None
 
 
-def get_model(self, forward_dict=None, load=False, csv_index=0, picture_size=28):
-    path = f'{self.model_path}{csv_index}.pt'
-    if load is True and os.path.isfile(path) is True:
-        model = torch.load(path).to(self.device)
-    else:
-        model = NeuralNet(forward_dict=forward_dict, picture_size=picture_size).to(self.device)
-    return model
-
-
+# Speichert die trainierten Modelle, sowie die dictionarys und die restlichen Parameter
 def save_all(model, model_save=True, rest_save=True):
     if os.path.exists(model.csv_path):
         num = len(pd.read_csv(model.csv_path))
@@ -92,12 +87,14 @@ def save_all(model, model_save=True, rest_save=True):
         torch.save(model.model, f'{model.model_path}{num}.pt')
 
 
+# Die Loss-Funktion wird ausgelesen
 def get_loss_fn(loss_fn):
     if loss_fn is None:
         loss_fn = f.nll_loss
     return loss_fn
 
 
+# Der Optimizer wird ausgelesen
 def get_optimizer(model, optimizer=None):
     if optimizer is None:
         optimizer = optim.SGD(model.model.parameters(), lr=model.lr, momentum=model.momentum)
@@ -130,5 +127,6 @@ def get_optimizer(model, optimizer=None):
     return optimizer
 
 
+# Speicherverbrauch wird ausgelesen
 def get_memory_usage(option):
     return nvidia_smi.getInstance().DeviceQuery('memory.' + option)['gpu'][0]['fb_memory_usage'][option]

@@ -42,6 +42,7 @@ class DigitIdentifier:
         self.average_loss_train = None
         self.average_loss_test = None
 
+    # Das neuronale Netz wird erstellt oder geladen. Hier pictureSize für jeden Datensatz Hard-Coden.
     def get_model(self, forward_dict=None, load=False, csv_index=0):
         path = f"models/digit_identifier/digit_identifier{csv_index}.pt"
         if load is True and os.path.isfile(path) is True:
@@ -50,6 +51,7 @@ class DigitIdentifier:
             model = NeuralNet(forward_dict=forward_dict, picture_size=28).to(self.device)
         return model
 
+    # Das Netz wird trainiert und gestoppt, sobald es 4 mal schlechter als das bisher beste Ergebnis war (early-stopping)
     def train_model(self, stop_counter_max=3):
         start_time = time.time()
         correct = None
@@ -97,6 +99,7 @@ class DigitIdentifier:
         self.average_loss_train = train_loss
         save_all(model=self, model_save=False, rest_save=True)
 
+    # Das Netz wird bisher unbekannten Daten getestet
     def test_model(self):
         self.model.eval()
         test_loss, correct = 0, 0
@@ -113,6 +116,8 @@ class DigitIdentifier:
         self.average_accuracy_test = 100 * correct
         self.average_loss_test = test_loss
 
+    # Das Netz kann mit visualisierung der Bilder ausprobiert werden.
+    # show ist die Anzahl der Bilder, die gezeigt werden sollen.
     def try_model(self, show=5):
         shown = 0
         self.model.eval()
@@ -136,6 +141,7 @@ class DigitIdentifier:
                 if shown >= show:
                     break
 
+    # Hier werden die Daten geladen
     @staticmethod
     def get_data(data, train=True):
         if data is None:

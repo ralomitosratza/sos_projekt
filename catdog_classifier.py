@@ -48,6 +48,7 @@ class CatdogClassifier:
         self.average_loss_train = None
         self.average_loss_test = None
 
+    # Das Netz wird trainiert und gestoppt, sobald es 4 mal schlechter als das bisher beste Ergebnis war (early-stopping)
     def train_model(self, stop_counter_max=3):
         start_time = time.time()
         correct = None
@@ -97,6 +98,7 @@ class CatdogClassifier:
         self.average_loss_train = train_loss
         save_all(model=self, model_save=False, rest_save=True)
 
+    # Das neuronale Netz wird erstellt. Hier picture_size hardcoden
     def get_model(self, forward_dict=None, load=False, csv_index=0):
         path = f"models/catdog_classifier/catdog_classifier{csv_index}.pt"
         if load is True and os.path.isfile(path) is True:
@@ -105,6 +107,7 @@ class CatdogClassifier:
             model = NeuralNet(forward_dict=forward_dict, picture_size=128).to(self.device)
         return model
 
+    # Hier werden die Daten geladen
     @staticmethod
     def get_data(train=True, batch_size=64):
         if os.path.isfile('data/catdog/tensor_train/tensor_train.pt') and train is True:
@@ -143,6 +146,7 @@ class CatdogClassifier:
             data = CatdogClassifier.get_data(train=train, batch_size=batch_size)
         return data
 
+    # Das Netz wird bisher unbekannten Daten getestet
     def test_model(self):
         self.model.eval()
         test_loss, correct = 0, 0
@@ -159,6 +163,8 @@ class CatdogClassifier:
         self.average_accuracy_test = 100 * correct
         self.average_loss_test = test_loss
 
+    # Das Netz kann mit visualisierung der Bilder ausprobiert werden.
+    # show ist die Anzahl der Bilder, die gezeigt werden sollen.
     def try_model(self, show=5):
         shown = 0
         self.model.eval()
